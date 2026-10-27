@@ -1,0 +1,1020 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 3 练习场 · PHP 文件读写互动练习 / Interactive Practice Lab</title>
+<style>
+  :root{
+    --bg:#070b14; --card:#0d1526; --card-2:#0a1120;
+    --line:#1c2a47; --line-2:#24365c;
+    --ink:#e2e8f0; --ink-2:#b7c3d6; --muted:#7f8ea8;
+    --accent:#22d3ee; --accent-2:#67e8f9;
+    --ok:#34d399; --warn:#fbbf24; --bad:#fb7185; --violet:#a78bfa;
+    --code-bg:#080d19; --radius:14px;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Segoe UI",sans-serif;
+    line-height:1.7;font-size:16px;
+    background:
+      radial-gradient(1100px 560px at 12% -8%, rgba(34,211,238,.10), transparent 60%),
+      radial-gradient(900px 520px at 88% -4%, rgba(167,139,250,.10), transparent 55%),
+      radial-gradient(800px 500px at 50% 110%, rgba(52,211,153,.07), transparent 60%),
+      linear-gradient(rgba(148,163,184,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148,163,184,.05) 1px, transparent 1px),
+      var(--bg);
+    background-size:auto,auto,auto,44px 44px,44px 44px,auto;
+    background-attachment:fixed;
+  }
+  code,pre,kbd,input.blank-in{font-family:var(--mono)}
+  ::selection{background:rgba(34,211,238,.35)}
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-thumb{background:#223354;border-radius:8px}
+  ::-webkit-scrollbar-track{background:transparent}
+
+  .topbar{position:sticky;top:0;z-index:60;background:rgba(7,11,20,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .topbar-in{max-width:1180px;margin:0 auto;display:flex;align-items:center;gap:1rem;padding:.65rem 1.5rem;flex-wrap:wrap}
+  .brand{font-weight:800;font-size:.98rem;white-space:nowrap}
+  .brand .cy{color:var(--accent)}
+  .brand small{display:block;font-weight:400;color:var(--muted);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase}
+  .prog{flex:1;min-width:150px;display:flex;align-items:center;gap:.6rem}
+  .pbar{flex:1;height:8px;background:#121d33;border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+  .pfill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--ok));transition:width .35s}
+  .ptext{font-size:.78rem;color:var(--ink-2);white-space:nowrap;font-family:var(--mono)}
+  .tlink{color:var(--ink-2);text-decoration:none;font-size:.85rem;border:1px solid var(--line);border-radius:999px;padding:.28rem .8rem;white-space:nowrap}
+  .tlink:hover{color:var(--accent);border-color:var(--accent)}
+  button.tlink{background:none;cursor:pointer;font-family:inherit}
+
+  .hero{padding:2.6rem 1.5rem 2.2rem;border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(13,21,38,.55),transparent)}
+  .hero-in{max-width:1180px;margin:0 auto}
+  .kicker{display:inline-block;font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(34,211,238,.35);background:rgba(34,211,238,.08);padding:.28rem .75rem;border-radius:999px;margin-bottom:1rem}
+  .hero h1{margin:0 0 .5rem;font-size:clamp(1.45rem,3.2vw,2.15rem);line-height:1.25}
+  .hero h1 small{display:block;font-weight:400;color:var(--ink-2);font-size:.6em;margin-top:.45rem}
+  .hero h1 small code{color:var(--accent-2)}
+  .hero p.lead{max-width:78ch;color:var(--ink-2);margin:.6rem 0 1rem}
+  .hero p.lead code{color:var(--accent-2)}
+  .chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:.9rem 0 1.2rem}
+  .chips span{font-size:.8rem;border:1px solid var(--line);background:rgba(148,163,184,.06);padding:.3rem .8rem;border-radius:999px;color:var(--ink-2)}
+  .chips span b{color:var(--accent)}
+  .howto{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;max-width:980px}
+  .howto div{border:1px solid var(--line);border-radius:12px;padding:.8rem 1rem;background:rgba(10,17,32,.6);font-size:.9rem}
+  .howto b{color:var(--accent);font-family:var(--mono);margin-right:.4rem}
+  .howto .en{display:block;color:var(--muted);font-size:.85em;margin-top:.2rem}
+
+  .wrap{max-width:1180px;margin:0 auto;padding:2rem 1.5rem 4rem}
+  .part{background:rgba(13,21,38,.72);border:1px solid var(--line);border-radius:var(--radius);padding:1.5rem 1.6rem;margin-bottom:1.9rem}
+  .part-h{display:flex;align-items:flex-start;gap:.9rem;flex-wrap:wrap;margin-bottom:.4rem}
+  .num{display:inline-grid;place-items:center;min-width:2.1rem;height:2.1rem;border-radius:10px;font-family:var(--mono);font-weight:700;font-size:.9rem;color:#04121a;background:linear-gradient(135deg,var(--accent),#5eead4);box-shadow:0 0 18px rgba(34,211,238,.25)}
+  .part-h h2{margin:0;font-size:1.22rem;line-height:1.3}
+  .part-h h2 small{display:block;font-weight:400;color:var(--muted);font-size:.76rem;margin-top:.2rem;font-family:var(--mono)}
+  .part-pill{margin-left:auto;font-size:.74rem;font-family:var(--mono);color:var(--ink-2);border:1px solid var(--line);border-radius:999px;padding:.25rem .7rem;white-space:nowrap}
+  .part-pill.done{color:var(--ok);border-color:rgba(52,211,153,.5)}
+  .brief{color:var(--ink-2);margin:.5rem 0 1rem;font-size:.94rem}
+  .brief .en{display:block;color:var(--muted);font-size:.88em}
+  .brief code{color:var(--accent-2)}
+
+  .cmp-cap{font-size:.84rem;color:var(--muted);margin:.2rem 0 .6rem}
+  .cmp-cap b{color:var(--warn)}
+  .cmp-cap b.dm{color:var(--ok)}
+  .cmp{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:.8rem 0 1.2rem}
+  .codebox{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--card-2);min-width:0}
+  .codebox .cap{display:flex;align-items:center;gap:.5rem;padding:.45rem .8rem;background:#101a30;border-bottom:1px solid var(--line);font-size:.76rem;font-family:var(--mono)}
+  .codebox .cap .name{color:var(--accent-2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .codebox .cap .tag{margin-left:auto;font-size:.68rem;letter-spacing:.05em;border:1px solid var(--line);border-radius:999px;padding:.08rem .5rem;color:var(--muted);white-space:nowrap}
+  .codebox .cap .tag.st{color:var(--warn);border-color:rgba(251,191,36,.4)}
+  .codebox .cap .tag.dm{color:var(--ok);border-color:rgba(52,211,153,.4)}
+  .codebox pre{margin:0;padding:.85rem .95rem;overflow:auto;max-height:480px;font-size:.815rem;line-height:1.6;color:#d7e2f0}
+  .copy{margin-left:auto;font-size:.68rem;color:var(--muted);background:none;border:1px solid var(--line);border-radius:6px;padding:.1rem .45rem;cursor:pointer;font-family:var(--mono)}
+  .copy:hover{color:var(--accent);border-color:var(--accent)}
+
+  .tok-tag{color:#89ddff}
+  .tok-str{color:#a5e08b}
+  .tok-cmt{color:#5d708c;font-style:italic}
+  .tok-var{color:#fbd38d}
+  .tok-kw{color:#c792ea}
+  .tok-num{color:#f78c6c}
+  .tok-const{color:#ff8fa3}
+  .tok-fn{color:#7dd3fc}
+  .line-hl{display:block;background:rgba(251,191,36,.10);box-shadow:inset 3px 0 0 var(--warn)}
+  .blank-mark{color:var(--warn);border-bottom:2px dashed rgba(251,191,36,.65);padding:0 .15em;letter-spacing:.06em}
+
+  .ex{border:1px solid var(--line);border-radius:12px;padding:1rem 1.15rem 1.05rem;margin:1rem 0;background:rgba(10,17,32,.55)}
+  .ex.solved{border-color:rgba(52,211,153,.45);box-shadow:inset 0 0 0 1px rgba(52,211,153,.15)}
+  .ex-q{font-size:.95rem;margin:.1rem 0 .7rem}
+  .ex-q .eid{font-family:var(--mono);font-size:.72rem;color:var(--accent);border:1px solid rgba(34,211,238,.35);border-radius:6px;padding:.05rem .4rem;margin-right:.5rem}
+  .ex-q .en{display:block;color:var(--muted);font-size:.86em;margin-top:.15rem}
+  .ex-code{background:var(--code-bg);border:1px solid var(--line);border-radius:10px;padding:.7rem .9rem;overflow-x:auto;font-size:.85rem;line-height:1.8;color:#d7e2f0;white-space:pre}
+  .blank{display:inline-block;vertical-align:baseline}
+  input.blank-in{
+    background:rgba(34,211,238,.07);border:none;border-bottom:2px solid var(--accent);
+    color:#a5f3fc;font-size:.85rem;text-align:center;padding:.05em .4ch;border-radius:5px 5px 0 0;outline:none;
+  }
+  input.blank-in:focus{background:rgba(34,211,238,.14)}
+  input.blank-in.good{border-color:var(--ok);color:#6ee7b7;background:rgba(52,211,153,.10)}
+  input.blank-in.bad{border-color:var(--bad);color:#fda4af;background:rgba(251,113,133,.10)}
+  .ex-act{display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;margin-top:.75rem}
+  .btn{cursor:pointer;font:inherit;font-size:.85rem;border-radius:9px;padding:.42rem 1rem;border:1px solid transparent;transition:.15s}
+  .btn-pri{background:linear-gradient(135deg,#0ea5c8,#0891b2);color:#04121a;font-weight:700}
+  .btn-pri:hover{filter:brightness(1.12)}
+  .btn-gh{background:transparent;color:var(--ink-2);border-color:var(--line)}
+  .btn-gh:hover{color:var(--accent);border-color:var(--accent)}
+  .btn-gh.on{color:var(--violet);border-color:var(--violet);background:rgba(167,139,250,.08)}
+  .btn-gh.on2{color:var(--ok);border-color:rgba(52,211,153,.55);background:rgba(52,211,153,.08)}
+  .fb{font-size:.86rem;margin-left:.2rem}
+  .fb.ok{color:var(--ok)}
+  .fb.no{color:var(--bad)}
+  .hintbox{margin-top:.8rem;border-left:3px solid var(--violet);background:rgba(167,139,250,.07);border-radius:0 10px 10px 0;padding:.65rem .9rem;font-size:.9rem}
+  .hintbox .en{display:block;color:var(--muted);font-size:.88em;margin-top:.15rem}
+  .srcbox{margin-top:.8rem}
+  .srcbox .codebox{margin-bottom:.6rem}
+  .hidden{display:none}
+
+  .opts{display:grid;gap:.5rem}
+  .opt{display:flex;gap:.6rem;align-items:flex-start;border:1px solid var(--line);border-radius:10px;padding:.55rem .8rem;cursor:pointer;font-size:.9rem;background:rgba(148,163,184,.04)}
+  .opt:hover{border-color:var(--line-2)}
+  .opt.sel{border-color:var(--accent);background:rgba(34,211,238,.08)}
+  .opt.good{border-color:var(--ok);background:rgba(52,211,153,.10)}
+  .opt.badpick{border-color:var(--bad);background:rgba(251,113,133,.10)}
+  .opt .k{font-family:var(--mono);color:var(--accent);font-weight:700;flex:0 0 auto}
+  .opt em{color:var(--muted);font-style:normal;font-size:.88em}
+
+  footer{max-width:1180px;margin:0 auto;padding:0 1.5rem 3rem;color:var(--muted);font-size:.85rem}
+  footer code{color:var(--accent-2)}
+  .noscript{max-width:1180px;margin:2rem auto;padding:1rem 1.4rem;border:1px solid var(--bad);border-radius:12px;color:var(--bad)}
+  [hidden]{display:none !important}
+
+  @media (max-width:900px){
+    .cmp{grid-template-columns:1fr}
+    .howto{grid-template-columns:1fr}
+    .part{padding:1.2rem 1rem}
+    .prog{order:3;flex-basis:100%}
+  }
+  @media print{
+    body{background:#fff;color:#111}
+    .topbar,.ex-act,.copy,.hintbox,.srcbox{display:none !important}
+    .part,.codebox,.ex{border-color:#bbb;background:#fff}
+    .codebox pre{color:#111;max-height:none}
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-in">
+    <div class="brand"><span class="cy">CSIS3280</span> · Week 3 练习场<small>PHP File I/O Practice Lab</small></div>
+    <div class="prog">
+      <div class="pbar"><div class="pfill" id="pfill"></div></div>
+      <span class="ptext" id="ptext">0 / 0</span>
+    </div>
+    <a class="tlink" href="index.html">操作指南 / Guide</a>
+    <button class="tlink" id="resetBtn" type="button">重置进度 / Reset</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-in">
+    <span class="kicker">3280 Backend Web Development · Week 3 · Interactive</span>
+    <h1>
+      空白代码段 · 网页版填空练习
+      <small>Fill-in-the-blank practice built from <code>week03_starter</code> (your task) and <code>week03_demo</code> (the teacher's complete code)</small>
+    </h1>
+    <p class="lead">
+      题目来自 <code>week03_starter</code>：那里只有工具库 <code>inc/file_utility.php</code>（第 57 行还是错的）和 <code>data/</code> 数据文件，
+      四个网页文件 <code>01–04_*.php</code> 都需要你写出来。所有答案与判分依据来自老师的完整教材 <code>week03_demo</code>。<br>
+      <span style="color:var(--muted);font-size:.9em">Exercises come from <code>week03_starter</code>; every answer is checked against the finished code in <code>week03_demo</code>. Progress is saved in your browser (localStorage).</span>
+    </p>
+    <div class="chips">
+      <span><b>5</b> 个部分 parts</span>
+      <span><b>18</b> 道题 exercises</span>
+      <span>答案校对按钮 <b>check answers</b></span>
+      <span>每题可 <b>查看原代码</b> view original code</span>
+      <span>每部分 <b>starter vs demo</b> 横向对比</span>
+      <span>暗夜 IT 主题 dark theme</span>
+    </div>
+    <div class="howto">
+      <div><b>1</b> 在代码空格里输入你的答案，点「检查答案」。<span class="en">Type your answer into the blanks, then press Check.</span></div>
+      <div><b>2</b> 卡住了先点「提示」，还不行就点「查看原代码」对照老师的写法。<span class="en">Stuck? Open the hint, then view the original code.</span></div>
+      <div><b>3</b> 每部分顶部有两个代码框，横向比较 starter 与 demo 的差异。<span class="en">Each part shows starter vs demo side by side.</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+  <main id="app"></main>
+</div>
+
+<footer>
+  <p>CSIS3280 · Week 3 · 从 <code>week03_starter</code> 到 <code>week03_demo</code> — 配套文字指南见 <a href="index.html" style="color:var(--accent)">index.html</a>，所有判分标准来自 <code>week03_demo</code> 的完整代码。</p>
+</footer>
+
+<noscript><div class="noscript">本练习页需要启用 JavaScript 才能判分 / This practice page requires JavaScript.</div></noscript>
+
+<!-- ============ raw sources (embedded verbatim, no escaping) ============ -->
+<div hidden>
+
+<script type="text/plain" id="skel-01">
+<?php
+
+$file = ________ . '/data/data.txt';
+
+$text = ________________($file);
+
+print "File content are \n" . $text;
+
+$numBytes = ________($file);
+
+print "\nFilesize is " . ________;
+</script>
+
+<script type="text/plain" id="skel-02">
+<?php
+
+$file1 = __DIR__ . '/data/data.txt';
+$file2 = __DIR__ . 'data.txt';
+
+if(___________($file1)){
+    print 'File 1 exist';
+    print ________________($file1);
+}
+
+if(___________($file2)){
+    print 'File 2 exist';
+    print ________________($file2);
+}
+</script>
+
+<script type="text/plain" id="skel-03">
+<?php
+
+$file = __DIR__ . '/data/newfile.txt';
+
+$content1 = ___ CONTENT
+the cat
+sat
+on the mat
+
+CONTENT;
+
+___________________($file,$content1);
+
+$content2 = <<< CONTENT
+the rat
+spat
+on the cat!
+CONTENT;
+
+file_put_contents($file,$content2,___________);
+</script>
+
+<script type="text/plain" id="skel-05">
+<?php
+
+____________ 'inc/file_utility.php';
+
+// read the file as an array
+$file = 'data/users.txt';
+readArray($file);
+
+// read using file_exist() and fgets()
+$file = 'data/orders.txt';
+readData($file);
+
+// read using file_exist() and fgetcsv()
+$file = 'data/orders.csv';
+_________($file);
+
+// write a new entry to users.txt
+$file = 'data/users.txt';
+$data = "\njohn______john@doe.com";
+
+fileWrite($file,$data);
+</script>
+
+<script type="text/plain" id="src-01">
+<?php
+
+$file = __DIR__ . '/data/data.txt';
+
+$text = file_get_contents($file);
+
+print "File content are \n" . $text;
+
+$numBytes = filesize($file);
+
+print "\nFilesize is " . $numBytes;
+</script>
+
+<script type="text/plain" id="src-02">
+<?php
+
+$file1 = __DIR__ . '/data/data.txt';
+$file2 = __DIR__ . 'data.txt';
+
+if(file_exists($file1)){
+    print 'File 1 exist';
+    print file_get_contents($file1);
+}
+
+if(file_exists($file2)){
+    print 'File 2 exist';
+    print file_get_contents($file2);
+}
+</script>
+
+<script type="text/plain" id="src-03">
+<?php
+
+$file = __DIR__ . '/data/newfile.txt';
+
+$content1 = <<< CONTENT
+the cat
+sat
+on the mat
+
+CONTENT;
+
+file_put_contents($file,$content1);
+
+$content2 = <<< CONTENT
+the rat
+spat
+on the cat!
+CONTENT;
+
+file_put_contents($file,$content2,FILE_APPEND);
+</script>
+
+<script type="text/plain" id="src-04">
+<?php
+
+require_once 'inc/file_utility.php';
+
+// read the file as an array
+$file = 'data/users.txt';
+readArray($file);
+
+// read using file_exist() and fgets()
+$file = 'data/orders.txt';
+readData($file);
+
+// read using file_exist() and fgetcsv()
+$file = 'data/orders.csv';
+readCSV($file);
+
+// write a new entry to users.txt
+$file = 'data/users.txt';
+$data = "\njohn\tjohn@doe.com";
+
+fileWrite($file,$data);
+</script>
+
+<script type="text/plain" id="src-ust">
+<?php
+function readArray($fileName){
+    // Read the file into an array
+    // doesn't need file handling. It will do opening and closing by itself
+    $users = file($fileName);
+    // Cycle through the array
+    foreach ($users as $user) {
+        // Parse the line, retrieving the name and e-mail address
+        list($name, $email) = explode("\t", $user);
+
+        // Remove newline from $email
+        $email = trim($email);
+        // Output the formatted name and e-mail address
+        echo "<a href=\"mailto:$email\">$name</a> <br>\n";
+    }
+}
+
+function openFile($fileName, $fmode){
+    if(file_exists($fileName)){
+        $fh = fopen($fileName, $fmode);
+        return $fh;
+    }
+    else{
+        echo "The file does not exist";
+        return false;
+    }
+}
+
+function readData($fileName){
+    $fh = openFile($fileName,'r');
+    if($fh){
+        // while end of line hasn't been reached, read next line
+        while(!feof($fh)) echo fgets($fh);
+        // close the file
+        fclose($fh);
+    }
+}
+
+
+function readCSV($fileName){
+    $fh = openFile($fileName, 'r');
+
+    // use loop to write an html table
+    echo "<table>";
+    while ($line = fgetcsv($fh, 1024, ',')) {
+        echo "\n<tr>";
+        for($i=0; $i<count($line);$i++){
+            echo "\n\t<td>" . trim($line[$i]) . "</td>";
+        }
+        echo "\n</tr>";
+    }
+    fclose($fh);
+}
+
+function fileWrite($fileName, $str){
+    if(file_exists($fileName)){
+@@        $fh = fopen($fileName, "r"); // change to ab next
+        try {
+            if (! fwrite($fh, $str)) {
+                throw new Exception("Could not open the file for writing!");
+                // why the exception was raised? bcause the file was opened for reading!
+            }
+        }
+        catch (Exception $e) {
+            echo "Error (File: ".$e->getFile().", line ".
+            $e->getLine()."): ".$e->getMessage();
+        }
+        finally {
+            if($fh) fclose($fh);
+        }
+    }
+    else{
+        echo "\nThe file does not exist";
+    }
+}
+</script>
+
+<script type="text/plain" id="src-udm">
+<?php
+function readArray($fileName){
+    // Read the file into an array
+    // doesn't need file handling. It will do opening and closing by itself
+    $users = file($fileName);
+    // Cycle through the array
+    foreach ($users as $user) {
+        // Parse the line, retrieving the name and e-mail address
+        list($name, $email) = explode("\t", $user);
+
+        // Remove newline from $email
+        $email = trim($email);
+        // Output the formatted name and e-mail address
+        echo "<a href=\"mailto:$email\">$name</a> <br>\n";
+    }
+}
+
+function openFile($fileName, $fmode){
+    if(file_exists($fileName)){
+        $fh = fopen($fileName, $fmode);
+        return $fh;
+    }
+    else{
+        echo "The file does not exist";
+        return false;
+    }
+}
+
+function readData($fileName){
+    $fh = openFile($fileName,'r');
+    if($fh){
+        // while end of line hasn't been reached, read next line
+        while(!feof($fh)) echo fgets($fh);
+        // close the file
+        fclose($fh);
+    }
+}
+
+
+function readCSV($fileName){
+    $fh = openFile($fileName, 'r');
+
+    // use loop to write an html table
+    echo "<table>";
+    while ($line = fgetcsv($fh, 1024, ',')) {
+        echo "\n<tr>";
+        for($i=0; $i<count($line);$i++){
+            echo "\n\t<td>" . trim($line[$i]) . "</td>";
+        }
+        echo "\n</tr>";
+    }
+    fclose($fh);
+}
+
+function fileWrite($fileName, $str){
+    if(file_exists($fileName)){
+@@        $fh = fopen($fileName, "a"); // change to ab next
+        try {
+            if (! fwrite($fh, $str)) {
+                throw new Exception("Could not open the file for writing!");
+                // why the exception was raised? bcause the file was opened for reading!
+            }
+        }
+        catch (Exception $e) {
+            echo "Error (File: ".$e->getFile().", line ".
+            $e->getLine()."): ".$e->getMessage();
+        }
+        finally {
+            if($fh) fclose($fh);
+        }
+    }
+    else{
+        echo "\nThe file does not exist";
+    }
+}
+</script>
+
+</div>
+
+<script>
+'use strict';
+
+/* ---------- tiny syntax highlighter ---------- */
+function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+var TOK_RE = /(&lt;\?php)|("(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')|(\/\/[^\n]*)|(\$[A-Za-z_]\w*)|(&lt;&lt;&lt;\s*[A-Za-z_]\w*)|\b(function|if|else|elseif|foreach|for|while|do|return|try|catch|finally|throw|new|echo|print|require_once|require|include|include_once|list|as|array|true|false|null)\b|\b(\d+)\b|\b([A-Z_][A-Z0-9_]{1,})\b|\b([A-Za-z_]\w*)(?=\s*\()/g;
+function hlLine(line){
+  var s = esc(line).replace(/_{3,}/g,'\u0001');
+  s = s.replace(TOK_RE, function(m,tag,str,cmt,v,hd,kw,num,cst,fn){
+    if(tag) return '<span class="tok-tag">'+tag+'</span>';
+    if(str) return '<span class="tok-str">'+str+'</span>';
+    if(cmt) return '<span class="tok-cmt">'+cmt+'</span>';
+    if(v)   return '<span class="tok-var">'+v+'</span>';
+    if(hd)  return '<span class="tok-kw">'+hd+'</span>';
+    if(kw)  return '<span class="tok-kw">'+kw+'</span>';
+    if(num) return '<span class="tok-num">'+num+'</span>';
+    if(cst) return '<span class="tok-const">'+cst+'</span>';
+    if(fn)  return '<span class="tok-fn">'+fn+'</span>';
+    return m;
+  });
+  return s.replace(/\u0001/g,'<span class="blank-mark">······</span>');
+}
+function hl(code){
+  return code.split('\n').map(function(l){
+    if(l.indexOf('@@')===0) return '<span class="line-hl">'+hlLine(l.slice(2))+'</span>';
+    return hlLine(l);
+  }).join('\n');
+}
+
+/* ---------- raw source access ---------- */
+var SRC_NAMES={
+  'skel-01':'week03_starter/01_read_file.php',
+  'skel-02':'week03_starter/02_read_file_exist.php',
+  'skel-03':'week03_starter/03_write_file.php',
+  'skel-05':'week03_starter/04_file_read_write.php',
+  'src-01':'week03_demo/01_read_file.php',
+  'src-02':'week03_demo/02_read_file_exist.php',
+  'src-03':'week03_demo/03_write_file.php',
+  'src-04':'week03_demo/04_file_read_write.php',
+  'src-ust':'week03_starter/inc/file_utility.php',
+  'src-udm':'week03_demo/inc/file_utility.php'
+};
+function srcText(id){
+  return document.getElementById(id).textContent.replace(/^\n/,'').replace(/\s+$/,'');
+}
+function srcLines(id,from,to){
+  return srcText(id).split('\n').slice(from-1,to).join('\n');
+}
+function rangeLabel(from,to){
+  return from===to ? ('第 '+from+' 行 / line '+from) : ('第 '+from+'–'+to+' 行 / lines '+from+'–'+to);
+}
+function norm(s){
+  return String(s).replace(/\r/g,'').replace(/\t/g,'\\t').trim().replace(/\s+/g,' ').toLowerCase();
+}
+
+/* ---------- exercise data ---------- */
+var PARTS=[
+{
+  id:'p1', num:'01', file:'01_read_file.php',
+  zh:'一次读完整个文件', en:'Read the whole file at once',
+  brief:{
+    zh:'week03_starter 中没有这个文件——你要新建它：用一条语句读入整个 data.txt，并报告文件大小（实测 60 字节）。',
+    en:'This file does not exist in week03_starter — create it: read the whole data.txt in one call and report its size (60 bytes).'
+  },
+  starter:{id:'skel-01', kind:'skeleton'},
+  demo:{id:'src-01'},
+  ex:[
+   { id:'e1-1', type:'blank',
+     q:{zh:'补全：用哪个「魔术常量」表示当前 PHP 文件所在的绝对目录？',
+        en:'Which magic constant holds the absolute directory of the current PHP file?'},
+     segs:['$file = ', {accept:['__DIR__'], w:9}, " . '/data/data.txt';"],
+     hint:{zh:'__DIR__ 是魔术常量 = 当前文件所在目录。用它拼路径，换个目录运行也不会找不到文件。',
+           en:'__DIR__ is the directory of the current file; paths stay valid no matter where you run from.'},
+     src:[{id:'src-01', from:3, to:3}] },
+   { id:'e1-2', type:'blank',
+     q:{zh:'补全：把整个文件一次读成一个字符串的函数是？',
+        en:'Which function reads the whole file into one string in a single call?'},
+     segs:['$text = ', {accept:['file_get_contents'], w:18}, '($file);'],
+     hint:{zh:'它自动打开、读取并关闭文件，不需要 fopen/fclose；失败时返回 false。',
+           en:'It opens, reads and closes the file for you; returns false on failure.'},
+     src:[{id:'src-01', from:5, to:5}] },
+   { id:'e1-3', type:'blank',
+     q:{zh:'补全：返回文件字节数的函数是？',
+        en:'Which function returns the file size in bytes?'},
+     segs:['$numBytes = ', {accept:['filesize'], w:10}, '($file);'],
+     hint:{zh:'文件大小（字节），data.txt 是 60 字节。', en:'Size in bytes — data.txt is 60 bytes.'},
+     src:[{id:'src-01', from:9, to:9}] },
+   { id:'e1-4', type:'blank',
+     q:{zh:'补全：把上面算好的字节数打印出来。',
+        en:'Print the byte count computed above.'},
+     segs:['print "\\nFilesize is " . ', {accept:['$numBytes'], w:11}, ';'],
+     hint:{zh:'第 9 行定义的变量叫什么就用什么，注意带 $ 符号。', en:'Use the variable defined on line 9, with the $ sign.'},
+     src:[{id:'src-01', from:9, to:11}] }
+  ]
+},
+{
+  id:'p2', num:'02', file:'02_read_file_exist.php',
+  zh:'存在才读（file_exists 守卫）', en:'Read only if it exists',
+  brief:{
+    zh:'同样要新建：读文件前先判断是否存在；注意 $file2 是一个故意写错的路径，用来演示这个判断的价值。',
+    en:'Create it: guard every read with an existence check; $file2 is intentionally wrong to show why the guard matters.'
+  },
+  starter:{id:'skel-02', kind:'skeleton'},
+  demo:{id:'src-02'},
+  ex:[
+   { id:'e2-1', type:'blank',
+     q:{zh:'补全：两处 if 都要用「判断文件是否存在」的同一个函数。',
+        en:'Fill in the same existence-testing function in both if statements.'},
+     segs:['if(', {accept:['file_exists'], w:13}, '($file1)){\n\nif(',
+           {accept:['file_exists'], w:13}, '($file2)){'],
+     hint:{zh:'返回 true / false，是读、写、删除前最常用的安全检查。', en:'Returns a boolean; the standard safety check.'},
+     src:[{id:'src-02', from:6, to:11}] },
+   { id:'e2-2', type:'blank',
+     q:{zh:'补全：两处读取内容都用同一个「一次读完」函数。',
+        en:'Fill in the same one-shot read function in both places.'},
+     segs:['if(file_exists($file1)){\n    print \'File 1 exist\';\n    print ',
+           {accept:['file_get_contents'], w:18}, '($file1);\n}\n\nif(file_exists($file2)){\n    print \'File 2 exist\';\n    print ',
+           {accept:['file_get_contents'], w:18}, '($file2);\n}'],
+     hint:{zh:'和 01_read_file.php 里用的是同一个函数。', en:'Same function as in 01_read_file.php.'},
+     src:[{id:'src-02', from:6, to:13}] },
+   { id:'e2-3', type:'choice', answer:1,
+     q:{zh:'选择题：运行后只看到 File 1，File 2 完全没输出。为什么？',
+        en:'Quiz: only File 1 is printed. Why is File 2 skipped?'},
+     opts:[
+      {t:'file_exists() 对任何路径都返回 false', en:'file_exists() always returns false'},
+      {t:"$file2 = __DIR__ . 'data.txt' 少了 /data/ 子目录，拼出来的是不存在的「项目目录data.txt」", en:"$file2 lacks the /data/ sub-folder, so it points to a non-existing path", ok:true},
+      {t:'print 不能写在 if 里面', en:'print cannot be used inside if'}
+     ],
+     hint:{zh:'对比第 3、4 行：$file1 有 /data/，$file2 没有——__DIR__ 后面直接接 data.txt，连斜杠都没有。',
+           en:"Compare lines 3–4: $file1 has /data/, $file2 does not — not even a slash after __DIR__."},
+     src:[{id:'src-02', from:3, to:4}] }
+  ]
+},
+{
+  id:'p3', num:'03', file:'03_write_file.php',
+  zh:'写入与追加（heredoc + file_put_contents）', en:'Write and append',
+  brief:{
+    zh:'同样要新建：用 heredoc 准备两段多行文本，先覆盖写入，再追加写入，自动生成 data/newfile.txt（6 行、52 字节）。',
+    en:'Create it: build two multi-line strings with heredoc, overwrite once, then append — producing data/newfile.txt (6 lines, 52 bytes).'
+  },
+  starter:{id:'skel-03', kind:'skeleton'},
+  demo:{id:'src-03'},
+  ex:[
+   { id:'e3-1', type:'blank',
+     q:{zh:'补全：开始一段 heredoc 多行字符串的记号是？',
+        en:'Which operator starts a heredoc string?'},
+     segs:['$content1 = ', {accept:['<<<'], w:5}, ' CONTENT'],
+     hint:{zh:'三个小于号。结束标识符 CONTENT 必须单独占一行，且紧挨它的那一个换行不计入字符串。',
+           en:'Three less-than signs; the closing identifier sits on its own line.'},
+     src:[{id:'src-03', from:5, to:10}] },
+   { id:'e3-2', type:'blank',
+     q:{zh:'补全：把字符串写进文件的一站式函数是？',
+        en:'Which one-stop function writes a string to a file?'},
+     segs:['', {accept:['file_put_contents'], w:18}, '($file,$content1);'],
+     hint:{zh:'默认是「覆盖」：原内容先被清空；文件不存在会自动创建。返回写入的字节数。',
+           en:'Overwrites by default and creates the file if missing; returns bytes written.'},
+     src:[{id:'src-03', from:12, to:12}] },
+   { id:'e3-3', type:'blank',
+     q:{zh:'补全：让第二次写入「追加到末尾而不是覆盖」的标志常量是？',
+        en:'Which flag makes the second write append instead of overwrite?'},
+     segs:['file_put_contents($file,$content2,', {accept:['FILE_APPEND'], w:12}, ');'],
+     hint:{zh:'全大写常量，作为第三个参数传入——本节课最重要的标志位。',
+           en:'An all-caps constant passed as the third argument — the key flag of this lesson.'},
+     src:[{id:'src-03', from:20, to:20}] },
+   { id:'e3-4', type:'choice', answer:0,
+     q:{zh:'选择题：把 03_write_file.php 运行两遍，data/newfile.txt 会变成什么样？',
+        en:'Quiz: run 03_write_file.php twice — what is in data/newfile.txt?'},
+     opts:[
+      {t:'仍是 6 行、52 字节——第一次覆盖、第二次追加，重复运行结果不变（幂等）', en:'Still 6 lines / 52 bytes — overwrite then append is idempotent', ok:true},
+      {t:'变成 12 行——每运行一次都追加一遍', en:'12 lines — each run appends again'},
+      {t:'只剩 3 行——第二次运行覆盖掉了第一次的全部内容', en:'Only 3 lines — the second run erased everything'}
+     ],
+     hint:{zh:'脚本先覆盖写 $content1，再追加写 $content2；再运行一遍还是这个顺序，所以结果不变。',
+           en:'The script overwrites with $content1 then appends $content2 — repeating it changes nothing.'},
+     src:[{id:'src-03', from:12, to:20}] }
+  ]
+},
+{
+  id:'p4', num:'INC', file:'inc/file_utility.php',
+  zh:'修好工具箱里的写入函数', en:'Fix fileWrite() in the toolbox',
+  brief:{
+    zh:'week03_starter 的 inc/file_utility.php 第 57 行用了只读模式，fwrite() 一定失败。下面两个框就是 starter 与 demo 的完整对比，注意黄色高亮行。',
+    en:'Line 57 of week03_starter/inc/file_utility.php opens the file read-only, so fwrite() always fails. Compare the full files below — watch the highlighted line.'
+  },
+  starter:{id:'src-ust', kind:'real'},
+  demo:{id:'src-udm'},
+  ex:[
+   { id:'e4-1', type:'blank',
+     q:{zh:'补全：把打开模式从只读 "r" 改成「追加」，可以填哪种写法？',
+        en:'Which mode string(s) make fopen() append instead of read?'},
+     segs:['$fh = fopen($fileName, ', {accept:['"a"', "'a'", 'a'], w:5}, '); // change to ab next'],
+     hint:{zh:'追加模式 "a"：指针在末尾、不清空原内容、文件不存在则创建。这正是 starter 与 demo 唯一的差别。',
+           en:'"a" = append: pointer at end, nothing truncated, created if missing. It is the only starter/demo difference.'},
+     src:[{id:'src-ust', from:57, to:57},{id:'src-udm', from:55, to:62}] },
+   { id:'e4-2', type:'choice', answer:0,
+     q:{zh:'选择题：在 "r"（只读）句柄上调用 fwrite() 会发生什么？',
+        en:'Quiz: what happens when you fwrite() to a read-only handle?'},
+     opts:[
+      {t:'返回 false，PHP 提示 errno=9 Bad file descriptor，于是 if(!fwrite(...)) 成立，触发代码里自己 throw 的异常', en:'fwrite() returns false (errno=9), and your own exception is thrown', ok:true},
+      {t:'正常写入，只是速度慢一点', en:'It writes fine, just slower'},
+      {t:'文件会被清空', en:'The file gets truncated'}
+     ],
+     hint:{zh:'fwrite 返回「写入字节数或 false」。失败 → throw → catch 输出 Could not open the file for writing!（demo 第 60 行）',
+           en:'fwrite returns bytes or false; the thrown message is printed by the catch block.'},
+     src:[{id:'src-udm', from:58, to:62}] },
+   { id:'e4-3', type:'blank',
+     q:{zh:'补全：finally 块里无论成败都要做的动作是？',
+        en:'What must always happen inside the finally block?'},
+     segs:['if($fh) ', {accept:['fclose'], w:8}, '($fh);'],
+     hint:{zh:'关闭文件句柄、释放资源；成功失败都要做，所以放在 finally。', en:'Close the handle — success or not, hence finally.'},
+     src:[{id:'src-udm', from:67, to:70}] }
+  ]
+},
+{
+  id:'p5', num:'04', file:'04_file_read_write.php',
+  zh:'把工具箱拼装起来', en:'Glue it all together',
+  brief:{
+    zh:'最后一个新文件：require_once 引入工具箱，按顺序调用 readArray / readData / readCSV / fileWrite 四个函数。',
+    en:'The last new file: require the toolbox once, then call readArray / readData / readCSV / fileWrite in order.'
+  },
+  starter:{id:'skel-05', kind:'skeleton'},
+  demo:{id:'src-04'},
+  ex:[
+   { id:'e5-1', type:'blank',
+     q:{zh:'补全：引入工具箱且保证「只引入一次」的语句是？',
+        en:'Which statement includes the toolbox exactly once?'},
+     segs:['', {accept:['require_once'], w:14}, " 'inc/file_utility.php';"],
+     hint:{zh:'require_once 防止重复引入导致「函数重复定义」的致命错误。', en:'require_once prevents fatal redeclaration errors.'},
+     src:[{id:'src-04', from:3, to:3}] },
+   { id:'e5-2', type:'blank',
+     q:{zh:'补全：把 orders.csv 读成 HTML 表格的工具函数是？',
+        en:'Which toolbox function turns a CSV file into an HTML table?'},
+     segs:['', {accept:['readCSV'], w:9}, '($file);    // orders.csv → html table'],
+     hint:{zh:'内部用 fgetcsv() 按逗号切分每一行，再用循环拼表格单元格。', en:'Internally fgetcsv() splits each row; loops build the cells.'},
+     src:[{id:'src-04', from:13, to:15}] },
+   { id:'e5-3', type:'blank',
+     q:{zh:'补全：新记录里姓名和邮箱之间必须用什么分隔（readArray 用 explode 切分）？',
+        en:'What separator must sit between name and e-mail for readArray() to parse it?'},
+     segs:['$data = "\\njohn', {accept:['\\t'], w:4}, 'john@doe.com";'],
+     hint:{zh:'users.txt 是制表符分隔的，写成转义字符 \\t；用空格会触发 Undefined array key 1 警告。',
+           en:'users.txt is tab-separated: use the escape \\t. A space triggers the Undefined array key warning.'},
+     src:[{id:'src-04', from:17, to:21}] },
+   { id:'e5-4', type:'choice', answer:1,
+     q:{zh:'选择题：修好第 57 行之后再运行一次 04，data/users.txt 会怎样？',
+        en:'Quiz: after fixing line 57, what happens if you run 04 again?'},
+     opts:[
+      {t:'内容不变', en:'Nothing changes'},
+      {t:'末尾又追加一行 john / john@doe.com —— fileWrite 是追加，不是幂等操作', en:'Another line is appended — fileWrite appends, it is not idempotent', ok:true},
+      {t:'PHP 报错，因为这条记录已经存在', en:'PHP errors because the record already exists'}
+     ],
+     hint:{zh:'fopen 的 "a" 模式每次都写到文件末尾，运行几次就追加几次。', en:'Mode "a" always writes at the end — one more line per run.'},
+     src:[{id:'src-udm', from:55, to:57}] }
+  ]
+}
+];
+
+/* ---------- state ---------- */
+var KEY='w3practice-v1';
+function loadState(){
+  try{ var d=JSON.parse(localStorage.getItem(KEY)); if(d && d.vals && d.solved) return d; }catch(e){}
+  return {vals:{}, solved:[]};
+}
+function saveState(){ try{ localStorage.setItem(KEY, JSON.stringify(db)); }catch(e){} }
+var db = loadState();
+var TOTAL = PARTS.reduce(function(n,p){return n+p.ex.length;},0);
+
+/* ---------- render helpers ---------- */
+function blankHTML(b, bi, exid){
+  return '<span class="blank"><input class="blank-in" data-bi="'+bi+'" data-ex="'+exid+
+         '" style="width:'+(b.w||8)+'ch" autocomplete="off" spellcheck="false" aria-label="answer blank"></span>';
+}
+function segsHTML(ex){
+  var bi=0, out='';
+  ex.segs.forEach(function(s){
+    if(typeof s==='string'){ out+=hl(s); } else { out+=blankHTML(s, bi++, ex.id); }
+  });
+  return out;
+}
+function codeboxHTML(kind, srcId){
+  var name=SRC_NAMES[srcId]||srcId;
+  var tag = kind==='demo'
+    ? '<span class="tag dm">DEMO · 完整答案 / finished code</span>'
+    : (kind==='real' ? '<span class="tag st">STARTER · 原文件 / original file</span>'
+                     : '<span class="tag st">STARTER · 骨架，需新建 / skeleton, create it</span>');
+  return '<div class="codebox"><div class="cap"><span class="name">'+esc(name)+'</span>'+
+         '<button class="copy" type="button" data-copy="'+srcId+'">复制 copy</button>'+tag+'</div>'+
+         '<pre>'+hl(srcText(srcId))+'</pre></div>';
+}
+function srcBlocksHTML(ex){
+  return ex.src.map(function(s){
+    var label=(SRC_NAMES[s.id]||s.id)+' · '+rangeLabel(s.from,s.to);
+    return '<div class="codebox"><div class="cap"><span class="name">'+esc(label)+'</span></div>'+
+           '<pre>'+hl(srcLines(s.id,s.from,s.to))+'</pre></div>';
+  }).join('');
+}
+function bilingual(o){
+  return esc(o.zh)+(o.en?'<span class="en">'+esc(o.en)+'</span>':'');
+}
+function exHTML(ex){
+  var body='', i;
+  if(ex.type==='blank'){
+    body='<div class="ex-code">'+segsHTML(ex)+'</div>';
+  }else{
+    body='<div class="opts">';
+    for(i=0;i<ex.opts.length;i++){
+      body+='<div class="opt" data-i="'+i+'" role="radio" aria-checked="false" tabindex="0">'+
+            '<span class="k">'+String.fromCharCode(65+i)+'</span><span>'+esc(ex.opts[i].t)+
+            (ex.opts[i].en?' <em>('+esc(ex.opts[i].en)+')</em>':'')+'</span></div>';
+    }
+    body+='</div>';
+  }
+  return '<article class="ex" id="ex-'+ex.id+'" data-type="'+ex.type+'">'+
+    '<div class="ex-q"><span class="eid">'+ex.id+'</span>'+bilingual(ex.q)+'</div>'+
+    body+
+    '<div class="ex-act">'+
+      '<button class="btn btn-pri check" type="button">检查答案 / Check</button>'+
+      '<button class="btn btn-gh hintBtn" type="button">提示 / Hint</button>'+
+      '<button class="btn btn-gh srcBtn" type="button">查看原代码 / View original code</button>'+
+      '<span class="fb" aria-live="polite"></span>'+
+    '</div>'+
+    '<div class="hintbox hidden">'+bilingual(ex.hint)+'</div>'+
+    '<div class="srcbox hidden">'+srcBlocksHTML(ex)+'</div>'+
+  '</article>';
+}
+function partHTML(p){
+  var exs=p.ex.map(exHTML).join('');
+  var note = p.starter.kind==='skeleton'
+    ? '（左框是<b>题目骨架</b>：这个文件在 week03_starter 中不存在，需要你新建，空白处就是练习点）<br>(Left box is the <b>skeleton</b>: the file does not exist in week03_starter — create it; the blanks are your exercises.)'
+    : '（左框是 week03_starter 中的<b>原文件</b>，黄色高亮行就是出错的地方）<br>(Left box is the <b>original file</b> from week03_starter; the highlighted line is the bug.)';
+  return '<section class="part" id="'+p.id+'">'+
+    '<div class="part-h"><span class="num">'+p.num+'</span>'+
+      '<h2>'+esc(p.zh)+' <code style="font-size:.8em;color:var(--accent-2)">'+esc(p.file)+'</code>'+
+      '<small>'+esc(p.en)+'</small></h2>'+
+      '<span class="part-pill" id="pill-'+p.id+'">0 / '+p.ex.length+'</span>'+
+    '</div>'+
+    '<p class="brief">'+bilingual(p.brief)+'</p>'+
+    '<div class="cmp-cap">横向对比 horizontal comparison：左 = <b>week03_starter</b>（你的题目 your task），右 = <b class="dm">week03_demo</b>（老师的完整教材 finished code）。'+note+'</div>'+
+    '<div class="cmp">'+codeboxHTML(p.starter.kind||'starter', p.starter.id)+codeboxHTML('demo', p.demo.id)+'</div>'+
+    exs+
+  '</section>';
+}
+document.getElementById('app').innerHTML = PARTS.map(partHTML).join('');
+
+/* ---------- checking ---------- */
+function blankDefs(ex){ return ex.segs.filter(function(s){return typeof s!=='string';}); }
+
+function checkBlank(ex, card){
+  var inputs=[].slice.call(card.querySelectorAll('input.blank-in'));
+  var defs=blankDefs(ex), allOk=true;
+  inputs.forEach(function(inp){
+    var i=+inp.dataset.bi, ok=defs[i].accept.some(function(a){return norm(a)===norm(inp.value);});
+    inp.classList.toggle('good',ok); inp.classList.toggle('bad',!ok);
+    if(!ok) allOk=false;
+  });
+  db.vals[ex.id]=inputs.map(function(i){return i.value;});
+  setSolved(ex, allOk, card,
+    allOk ? '全部正确，已记入进度 / All correct — progress saved'
+          : '还有不对的空，试试提示或查看原代码 / Not yet — use the hint or view the original code');
+}
+function checkChoice(ex, card){
+  var sel=card.querySelector('.opt.sel');
+  if(!sel){ setFb(card,false,'先选择一个选项 / pick an option first'); return; }
+  var i=+sel.dataset.i, ok=!!ex.opts[i].ok;
+  card.querySelectorAll('.opt').forEach(function(o){
+    o.classList.remove('good','badpick');
+    if(+o.dataset.i===i){ o.classList.add(ok?'good':'badpick'); }
+  });
+  db.vals[ex.id]=i;
+  setSolved(ex, ok, card, ok?'回答正确，已记入进度 / Correct — progress saved':'不对，再想想（可看提示或原代码）/ Not quite — hint or original code');
+}
+function setFb(card, ok, text){
+  var fb=card.querySelector('.fb');
+  fb.textContent=text; fb.classList.toggle('ok',!!ok); fb.classList.toggle('no',!ok);
+}
+function setSolved(ex, ok, card, text){
+  setFb(card, ok, text);
+  var idx=db.solved.indexOf(ex.id);
+  if(ok && idx<0) db.solved.push(ex.id);
+  if(!ok && idx>=0) db.solved.splice(idx,1);
+  card.classList.toggle('solved', ok);
+  saveState(); updateProgress();
+}
+
+/* ---------- wiring ---------- */
+document.querySelectorAll('.ex').forEach(function(card){
+  var exid=card.id.slice(3);
+  var ex=null;
+  PARTS.forEach(function(p){ p.ex.forEach(function(e){ if(e.id===exid) ex=e; }); });
+
+  card.querySelector('.check').addEventListener('click', function(){
+    if(ex.type==='blank') checkBlank(ex, card); else checkChoice(ex, card);
+  });
+  card.querySelector('.hintBtn').addEventListener('click', function(ev){
+    var h=card.querySelector('.hintbox'); h.classList.toggle('hidden');
+    ev.currentTarget.classList.toggle('on', !h.classList.contains('hidden'));
+  });
+  card.querySelector('.srcBtn').addEventListener('click', function(ev){
+    var s=card.querySelector('.srcbox'); s.classList.toggle('hidden');
+    ev.currentTarget.classList.toggle('on2', !s.classList.contains('hidden'));
+  });
+  card.querySelectorAll('.opt').forEach(function(o){
+    function pick(){
+      card.querySelectorAll('.opt').forEach(function(x){x.classList.remove('sel','good','badpick');});
+      o.classList.add('sel'); o.setAttribute('aria-checked','true');
+      db.vals[exid]=+o.dataset.i; saveState();
+    }
+    o.addEventListener('click', pick);
+    o.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){e.preventDefault();pick();} });
+  });
+  card.querySelectorAll('input.blank-in').forEach(function(inp){
+    inp.addEventListener('input', function(){
+      inp.classList.remove('good','bad');
+      var vals=db.vals[exid];
+      if(!Array.isArray(vals)) vals=[];
+      vals[+inp.dataset.bi]=inp.value; db.vals[exid]=vals; saveState();
+    });
+    inp.addEventListener('keydown', function(e){
+      if(e.key==='Enter'){ e.preventDefault(); card.querySelector('.check').click(); }
+    });
+  });
+});
+
+/* ---------- progress + restore ---------- */
+function updateProgress(){
+  var n=db.solved.length;
+  document.getElementById('pfill').style.width=(TOTAL? (n/TOTAL*100):0)+'%';
+  document.getElementById('ptext').textContent=n+' / '+TOTAL;
+  PARTS.forEach(function(p){
+    var done=p.ex.filter(function(e){return db.solved.indexOf(e.id)>=0;}).length;
+    var pill=document.getElementById('pill-'+p.id);
+    pill.textContent=done+' / '+p.ex.length+(done===p.ex.length?' 已完成 done':'');
+    pill.classList.toggle('done', done===p.ex.length);
+  });
+}
+(function restore(){
+  PARTS.forEach(function(p){
+    p.ex.forEach(function(ex){
+      var card=document.getElementById('ex-'+ex.id), v=db.vals[ex.id];
+      if(ex.type==='blank' && Array.isArray(v)){
+        card.querySelectorAll('input.blank-in').forEach(function(inp,i){
+          if(typeof v[i]==='string') inp.value=v[i];
+        });
+      }
+      if(ex.type==='choice' && typeof v==='number'){
+        var o=card.querySelector('.opt[data-i="'+v+'"]'); if(o) o.classList.add('sel');
+      }
+      if(db.solved.indexOf(ex.id)>=0){
+        card.classList.add('solved');
+        if(ex.type==='blank'){
+          card.querySelectorAll('input.blank-in').forEach(function(inp){
+            var ok=blankDefs(ex)[+inp.dataset.bi].accept.some(function(a){return norm(a)===norm(inp.value);});
+            inp.classList.add(ok?'good':'bad');
+          });
+        }
+        setFb(card,true,'已完成 / solved');
+      }
+    });
+  });
+  updateProgress();
+})();
+
+document.getElementById('resetBtn').addEventListener('click', function(){
+  if(confirm('确定清空全部练习进度？/ Reset all progress?')){
+    try{ localStorage.removeItem(KEY); }catch(e){}
+    location.reload();
+  }
+});
+
+/* ---------- copy buttons ---------- */
+document.addEventListener('click', function(ev){
+  var btn=ev.target.closest('.copy');
+  if(!btn) return;
+  var text=srcText(btn.dataset.copy);
+  function done(){ var old=btn.textContent; btn.textContent='已复制 copied'; setTimeout(function(){btn.textContent=old;},1200); }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(text).then(done, function(){ fallbackCopy(text); done(); });
+  }else{ fallbackCopy(text); done(); }
+});
+function fallbackCopy(text){
+  var ta=document.createElement('textarea');
+  ta.value=text; ta.style.position='fixed'; ta.style.opacity='0';
+  document.body.appendChild(ta); ta.select();
+  try{ document.execCommand('copy'); }catch(e){}
+  document.body.removeChild(ta);
+}
+</script>
+</body>
+</html>

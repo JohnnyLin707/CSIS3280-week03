@@ -1,11 +1,12 @@
-# Week 3 双语操作指南｜从 `Lecture3demo_starter` 到 `week03_demo`
-# Week 3 Bilingual Guide · From `Lecture3demo_starter` to `week03_demo`
+# Week 3 双语操作指南｜从 `week03_starter` 到 `week03_demo`
+# Week 3 Bilingual Guide · From `week03_starter` to `week03_demo`
 
 > **适用课程 / Course:** 3280 Backend Web Development — Week 3（PHP 文件读写 / PHP File I/O）
-> **起点 / Start:** `../Lecture3demo_starter/`　**终点 / Finish:** `../week03_demo/`
+> **起点 / Start:** `../week03_starter/`　**终点 / Finish:** `../week03_demo/`
 > **预计用时 / Time:** 60–90 分钟 / minutes
 > **环境 / Environment:** PHP 8.0+（本指南所有输出均在 PHP 8.2.4 实测 / all outputs verified on PHP 8.2.4）
 > **同内容网页版 / Same content as a webpage:** 打开同目录的 `index.html` / open `index.html` in this folder
+> **互动练习 / Interactive practice:** 打开同目录的 `practice.html` —— 空白代码段网页填空 + 答案校对按钮 + 每题「查看原代码」+ 每部分 starter/demo 横向对比（暗夜 IT 主题，进度自动保存在浏览器）/ open `practice.html` for fill-in-the-blank exercises with answer checking, a per-question "view original code" button, side-by-side starter/demo comparison, and a dark IT theme (progress saved in your browser).
 
 ## 阅读符号 / Legend
 
@@ -22,9 +23,9 @@
 
 ## 1. 这次任务要做什么 / What This Task Is About
 
-**中文：** `Lecture3demo_starter/` 是一个「半成品」：它只给你**工具箱**（`inc/file_utility.php` 里的 5 个函数）和**数据**（`data/` 里的 4 个文本文件），但**没有任何可以运行的页面**。你的任务是从零写出 4 个演示页面，并修好工具箱里的 1 行代码，最终得到 `week03_demo/`。
+**中文：** `week03_starter/` 是一个「半成品」：它只给你**工具箱**（`inc/file_utility.php` 里的 5 个函数）和**数据**（`data/` 里的 4 个文本文件），但**没有任何可以运行的页面**。你的任务是从零写出 4 个演示页面，并修好工具箱里的 1 行代码，最终得到 `week03_demo/`。
 
-**English:** `Lecture3demo_starter/` is a half-finished project. It gives you the **toolbox** (5 functions in `inc/file_utility.php`) and the **data** (`data/`), but there is **no runnable page at all**. Your job is to write 4 demo pages from scratch and fix 1 line in the toolbox, ending up with `week03_demo/`.
+**English:** `week03_starter/` is a half-finished project. It gives you the **toolbox** (5 functions in `inc/file_utility.php`) and the **data** (`data/`), but there is **no runnable page at all**. Your job is to write 4 demo pages from scratch and fix 1 line in the toolbox, ending up with `week03_demo/`.
 
 **本次要掌握的核心能力 / Core skills covered:**
 
@@ -83,11 +84,11 @@ php -v
 
 ### 4.2 复制一份工作目录 / Copy the working folder
 
-**中文：** 直接在 `Lecture3demo_starter/` 里写也可以，但更推荐先复制成 `/tmp` 之外的一个新文件夹（例如 `my_week03/`），这样出错时可以随时回到干净的起点。
-**English:** You may work directly inside `Lecture3demo_starter/`, but it is safer to copy it to a new folder (e.g. `my_week03/`) so you can always restart from a clean state.
+**中文：** 直接在 `week03_starter/` 里写也可以，但更推荐先复制成 `/tmp` 之外的一个新文件夹（例如 `my_week03/`），这样出错时可以随时回到干净的起点。
+**English:** You may work directly inside `week03_starter/`, but it is safer to copy it to a new folder (e.g. `my_week03/`) so you can always restart from a clean state.
 
 ```bash
-cp -R Lecture3demo_starter my_week03
+cp -R week03_starter my_week03
 cd my_week03
 ```
 
@@ -470,8 +471,8 @@ special, C112A, 1<table>
 | 6 | `data/users.txt` | 比初始多一行 `john	john@doe.com`（44 → 62 字节） |
 | 7 | 浏览器访问 `http://localhost/week03/04_file_read_write.php` | 邮箱是可点击链接，CSV 渲染成表格 |
 
-**中文：** 7 项全部通过，说明你已经完成了从 `Lecture3demo_starter` 到 `week03_demo` 的全部编程工作。
-**English:** All 7 passing means you have reproduced every change from `Lecture3demo_starter` to `week03_demo`.
+**中文：** 7 项全部通过，说明你已经完成了从 `week03_starter` 到 `week03_demo` 的全部编程工作。
+**English:** All 7 passing means you have reproduced every change from `week03_starter` to `week03_demo`.
 
 ---
 
@@ -548,7 +549,7 @@ special, C112A, 1<table>
 ### 文件对照 / Where to look
 
 - 我写的成品代码 / finished code: `../week03_demo/`（`01`–`04` + `inc/file_utility.php`）
-- 全新起点 / clean starting point: `../Lecture3demo_starter/`
+- 全新起点 / clean starting point: `../week03_starter/`
 - 本指南网页版 / web version of this guide: 同目录 `index.html`
 
 **祝调试顺利！/ Happy debugging!**

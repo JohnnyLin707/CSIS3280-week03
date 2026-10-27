@@ -3,45 +3,65 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Week 3 双语操作指南 · 从 Lecture3demo_starter 到 week03_demo / Bilingual Guide</title>
+<title>Week 3 双语操作指南 · 从 week03_starter 到 week03_demo / Bilingual Guide</title>
 <style>
   :root{
-    --ink:#0f172a;
-    --ink-2:#334155;
-    --muted:#64748b;
-    --line:#e2e8f0;
-    --bg:#f8fafc;
-    --card:#ffffff;
-    --accent:#4338ca;
-    --accent-soft:#eef2ff;
-    --ok:#047857;
-    --ok-soft:#ecfdf5;
-    --warn:#b45309;
-    --warn-soft:#fffbeb;
-    --tip:#0369a1;
-    --tip-soft:#f0f9ff;
-    --code-bg:#0f172a;
-    --code-ink:#e2e8f0;
+    --ink:#e2e8f0;
+    --ink-2:#cbd5e1;
+    --muted:#8494ab;
+    --line:#22304a;
+    --bg:#070b14;
+    --card:#0d1526;
+    --accent:#22d3ee;
+    --accent-soft:rgba(34,211,238,.14);
+    --ok:#34d399;
+    --ok-soft:rgba(52,211,153,.12);
+    --warn:#fbbf24;
+    --warn-soft:rgba(251,191,36,.10);
+    --tip:#38bdf8;
+    --tip-soft:rgba(56,189,248,.10);
+    --code-bg:#080d19;
+    --code-ink:#d7e2f0;
     --radius:14px;
   }
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{
     margin:0;
-    background:var(--bg);
     color:var(--ink);
     font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Segoe UI",sans-serif;
     line-height:1.7;
     font-size:16px;
+    background:
+      radial-gradient(1100px 560px at 12% -8%, rgba(34,211,238,.09), transparent 60%),
+      radial-gradient(900px 520px at 88% -4%, rgba(129,140,248,.09), transparent 55%),
+      linear-gradient(rgba(148,163,184,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148,163,184,.045) 1px, transparent 1px),
+      var(--bg);
+    background-size:auto,auto,46px 46px,46px 46px,auto;
+    background-attachment:fixed;
   }
   code,pre,kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
 
   /* ---------- hero ---------- */
   .hero{
-    background:linear-gradient(135deg,#312e81 0%,#4338ca 45%,#0e7490 100%);
-    color:#fff;
+    background:linear-gradient(160deg,#0b1226 0%,#0e1a33 45%,#0a2740 100%);
+    border-bottom:1px solid var(--line);
+    color:#f1f5f9;
     padding:2.6rem 1.5rem 2.9rem;
   }
+  .hero h1 code{color:#a5f3fc}
+  .cta{
+    display:inline-flex;align-items:center;gap:.5rem;margin-top:1.2rem;
+    color:#041018;background:linear-gradient(135deg,#22d3ee,#5eead4);text-decoration:none;
+    font-weight:700;font-size:.92rem;padding:.6rem 1.2rem;border-radius:999px;
+    box-shadow:0 0 22px rgba(34,211,238,.30);
+  }
+  .cta:hover{filter:brightness(1.08)}
+  ::selection{background:rgba(34,211,238,.35)}
+  ::-webkit-scrollbar{width:10px;height:10px}
+  ::-webkit-scrollbar-thumb{background:#223354;border-radius:8px}
+  ::-webkit-scrollbar-track{background:transparent}
   .hero-in{max-width:1180px;margin:0 auto}
   .hero .kicker{
     display:inline-block;font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;
@@ -71,7 +91,7 @@
   }
   section > h2 .num{
     display:inline-grid;place-items:center;min-width:1.9rem;height:1.9rem;margin-right:.6rem;
-    background:var(--accent);color:#fff;border-radius:9px;font-size:.9rem;vertical-align:middle;
+    background:var(--accent);color:#041018;border-radius:9px;font-size:.9rem;vertical-align:middle;font-weight:800;
   }
   section > h2 small{display:block;font-weight:400;color:var(--muted);font-size:.78rem;margin-top:.3rem;letter-spacing:.02em}
   h3{font-size:1rem;margin:1.5rem 0 .6rem;color:var(--ink)}
@@ -84,7 +104,7 @@
   /* ---------- bilingual blocks ---------- */
   .bi{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:.7rem 0}
   .bi > div{
-    background:#fbfcfe;border:1px solid var(--line);border-radius:10px;padding:.7rem .85rem .75rem;
+    background:rgba(148,163,184,.05);border:1px solid var(--line);border-radius:10px;padding:.7rem .85rem .75rem;
   }
   .bi > div::before{
     display:block;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
@@ -110,7 +130,7 @@
   .code.term pre{background:#020617;color:#d1fae5}
   pre.plain{background:var(--code-bg);color:var(--code-ink);padding:.95rem 1.1rem;border-radius:12px;overflow-x:auto;font-size:.855rem;line-height:1.62}
 
-  code.inline{background:#eef2f7;border:1px solid var(--line);border-radius:6px;padding:.08rem .38rem;font-size:.88em;color:#1e293b;white-space:nowrap}
+  code.inline{background:rgba(34,211,238,.10);border:1px solid rgba(34,211,238,.28);border-radius:6px;padding:.08rem .38rem;font-size:.88em;color:#a5f3fc;white-space:nowrap}
 
   /* ---------- callouts ---------- */
   .note{border-left:4px solid var(--tip);background:var(--tip-soft);border-radius:0 10px 10px 0;padding:.75rem 1rem;margin:.9rem 0}
@@ -123,10 +143,11 @@
 
   /* ---------- tables ---------- */
   .tbl-wrap{overflow-x:auto;margin:1rem 0}
-  table{border-collapse:collapse;width:100%;font-size:.88rem;background:#fff;min-width:560px}
+  table{border-collapse:collapse;width:100%;font-size:.88rem;background:transparent;min-width:560px}
   th,td{border:1px solid var(--line);padding:.5rem .65rem;text-align:left;vertical-align:top}
-  thead th{background:#f1f5f9;font-size:.82rem;letter-spacing:.02em}
-  tbody tr:nth-child(even) td{background:#fafbfd}
+  thead th{background:rgba(148,163,184,.10);font-size:.82rem;letter-spacing:.02em}
+  tbody tr:nth-child(even) td{background:rgba(148,163,184,.05)}
+  td code,th code{color:#a5f3fc}
   td code,th code{white-space:nowrap}
 
   /* ---------- checklist ---------- */
@@ -134,7 +155,7 @@
   ul.check li{position:relative;padding-left:1.7rem;margin:.42rem 0}
   ul.check li::before{
     content:"";position:absolute;left:0;top:.35rem;width:.95rem;height:.95rem;
-    border:2px solid #94a3b8;border-radius:4px;background:#fff;
+    border:2px solid #3d4f6e;border-radius:4px;background:#0d1526;
   }
   ul.check li b{color:var(--accent)}
 
@@ -151,12 +172,23 @@
     section{padding:1.2rem 1.1rem}
   }
   @media print{
-    body{background:#fff;font-size:11.5pt}
+    :root{
+      --ink:#0f172a; --ink-2:#334155; --muted:#64748b; --line:#d8dfe9;
+      --card:#ffffff; --accent:#4338ca; --accent-soft:#eef2ff;
+      --ok:#047857; --ok-soft:#ecfdf5; --warn:#b45309; --warn-soft:#fffbeb;
+      --tip:#0369a1; --tip-soft:#f0f9ff;
+    }
+    body{background:#fff !important;font-size:11.5pt;color:#0f172a}
     .hero{background:#1e1b4b !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;padding:1.2rem}
+    .cta{display:none}
     aside.toc,footer{display:none}
     .wrap{display:block;padding:0}
-    section{border:none;padding:0;margin:0 0 1.1rem;page-break-inside:avoid-break}
+    section{border:none;padding:0;margin:0 0 1.1rem;page-break-inside:avoid-break;background:#fff}
     .code pre,.code .bar,.tbl-wrap,.note{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    code.inline{background:#eef2f7 !important;border-color:#cbd5e1 !important;color:#1e293b !important}
+    .bi > div, table, ul.check li::before{background:#fff !important}
+    thead th{background:#f1f5f9 !important}
+    tbody tr:nth-child(even) td{background:#fafbfd !important}
     section{break-inside:auto}
     h2,h3{break-after:avoid}
     .code,table,.note{break-inside:avoid}
@@ -170,15 +202,16 @@
     <span class="kicker">3280 Backend Web Development · Week 3</span>
     <h1>
       Week 3 双语操作指南 · 从 Starter 到成品
-      <small>Bilingual Step-by-Step Guide · From <code>Lecture3demo_starter</code> to <code>week03_demo</code></small>
+      <small>Bilingual Step-by-Step Guide · From <code>week03_starter</code> to <code>week03_demo</code></small>
     </h1>
     <div class="meta">
       <span>PHP 文件读写 / PHP File I/O</span>
-      <span>起点 Start: Lecture3demo_starter/</span>
+      <span>起点 Start: week03_starter/</span>
       <span>终点 Finish: week03_demo/</span>
       <span>用时 Time: 60–90 分钟 min</span>
       <span>实测环境 Tested on PHP 8.2.4</span>
     </div>
+    <a class="cta" href="practice.html">进入网页版填空练习 · Open the Interactive Practice →</a>
   </div>
 </header>
 
@@ -201,6 +234,7 @@
       <li><a href="#s13">加练题目 / Exercises</a></li>
       <li><a href="#s14">术语表 / Glossary</a></li>
     </ol>
+    <p style="margin:.8rem 0 0"><a href="practice.html"><b>网页版填空练习 / Interactive practice →</b></a></p>
   </aside>
 
   <main>
@@ -211,11 +245,11 @@
 
     <div class="bi">
       <div class="zh">
-        <p><code class="inline">Lecture3demo_starter/</code> 是一个「半成品」：它只给你<b>工具箱</b>（<code class="inline">inc/file_utility.php</code> 里的 5 个函数）和<b>数据</b>（<code class="inline">data/</code> 里的 4 个文本文件），<b>没有任何可以运行的页面</b>。</p>
+        <p><code class="inline">week03_starter/</code> 是一个「半成品」：它只给你<b>工具箱</b>（<code class="inline">inc/file_utility.php</code> 里的 5 个函数）和<b>数据</b>（<code class="inline">data/</code> 里的 4 个文本文件），<b>没有任何可以运行的页面</b>。</p>
         <p>你的任务：从零写出 4 个演示页面 + 修好工具箱里的 1 行代码 → 得到 <code class="inline">week03_demo/</code>。</p>
       </div>
       <div class="en">
-        <p><code class="inline">Lecture3demo_starter/</code> is a half-finished project. It gives you the <b>toolbox</b> (5 functions in <code class="inline">inc/file_utility.php</code>) and the <b>data</b> (<code class="inline">data/</code>), but <b>no runnable page at all</b>.</p>
+        <p><code class="inline">week03_starter/</code> is a half-finished project. It gives you the <b>toolbox</b> (5 functions in <code class="inline">inc/file_utility.php</code>) and the <b>data</b> (<code class="inline">data/</code>), but <b>no runnable page at all</b>.</p>
         <p>Your job: write 4 demo pages from scratch and fix 1 line in the toolbox, ending up with <code class="inline">week03_demo/</code>.</p>
       </div>
     </div>
@@ -298,12 +332,12 @@
 
     <h3>4.2 复制一份工作目录 / Copy the working folder</h3>
     <div class="bi">
-      <div class="zh">也可以直接在 <code class="inline">Lecture3demo_starter/</code> 里写，但更推荐先复制出新文件夹（例如 <code class="inline">my_week03/</code>），出错时可以随时回到干净的起点。</div>
-      <div class="en">You may work directly inside <code class="inline">Lecture3demo_starter/</code>, but it is safer to copy it to a new folder (e.g. <code class="inline">my_week03/</code>) so you can always restart from a clean state.</div>
+      <div class="zh">也可以直接在 <code class="inline">week03_starter/</code> 里写，但更推荐先复制出新文件夹（例如 <code class="inline">my_week03/</code>），出错时可以随时回到干净的起点。</div>
+      <div class="en">You may work directly inside <code class="inline">week03_starter/</code>, but it is safer to copy it to a new folder (e.g. <code class="inline">my_week03/</code>) so you can always restart from a clean state.</div>
     </div>
     <div class="code term">
       <div class="bar">Terminal</div>
-      <pre>cp -R Lecture3demo_starter my_week03
+      <pre>cp -R week03_starter my_week03
 cd my_week03</pre>
     </div>
 
@@ -771,8 +805,8 @@ special, C112A, 1&lt;table&gt;
       </table>
     </div>
     <div class="bi">
-      <div class="zh">7 项全部通过，说明你已经完成了从 <code class="inline">Lecture3demo_starter</code> 到 <code class="inline">week03_demo</code> 的全部编程工作。</div>
-      <div class="en">All 7 passing means you have reproduced every change from <code class="inline">Lecture3demo_starter</code> to <code class="inline">week03_demo</code>.</div>
+      <div class="zh">7 项全部通过，说明你已经完成了从 <code class="inline">week03_starter</code> 到 <code class="inline">week03_demo</code> 的全部编程工作。</div>
+      <div class="en">All 7 passing means you have reproduced every change from <code class="inline">week03_starter</code> to <code class="inline">week03_demo</code>.</div>
     </div>
   </section>
 
@@ -907,7 +941,7 @@ special, C112A, 1&lt;table&gt;
 </div>
 
 <footer>
-  <p><b>文件对照 / Where to look</b> · 成品代码 finished code: <code>../week03_demo/</code> · 全新起点 clean start: <code>../Lecture3demo_starter/</code> · 本指南同内容 Markdown: <code>README.md</code></p>
+  <p><b>文件对照 / Where to look</b> · 成品代码 finished code: <code>../week03_demo/</code> · 全新起点 clean start: <code>../week03_starter/</code> · 本指南同内容 Markdown: <code>README.md</code></p>
   <p>祝调试顺利！/ Happy debugging!</p>
 </footer>
 
