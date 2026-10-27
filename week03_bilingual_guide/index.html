@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Week 3 双语操作指南 · 从 Lecture3demo_starter 到 week03_demo / Bilingual Guide</title>
+<style>
+  :root{
+    --ink:#0f172a;
+    --ink-2:#334155;
+    --muted:#64748b;
+    --line:#e2e8f0;
+    --bg:#f8fafc;
+    --card:#ffffff;
+    --accent:#4338ca;
+    --accent-soft:#eef2ff;
+    --ok:#047857;
+    --ok-soft:#ecfdf5;
+    --warn:#b45309;
+    --warn-soft:#fffbeb;
+    --tip:#0369a1;
+    --tip-soft:#f0f9ff;
+    --code-bg:#0f172a;
+    --code-ink:#e2e8f0;
+    --radius:14px;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:system-ui,-apple-system,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Segoe UI",sans-serif;
+    line-height:1.7;
+    font-size:16px;
+  }
+  code,pre,kbd{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace}
+
+  /* ---------- hero ---------- */
+  .hero{
+    background:linear-gradient(135deg,#312e81 0%,#4338ca 45%,#0e7490 100%);
+    color:#fff;
+    padding:2.6rem 1.5rem 2.9rem;
+  }
+  .hero-in{max-width:1180px;margin:0 auto}
+  .hero .kicker{
+    display:inline-block;font-size:.75rem;letter-spacing:.16em;text-transform:uppercase;
+    background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);
+    padding:.28rem .7rem;border-radius:999px;margin-bottom:1rem;
+  }
+  .hero h1{margin:0 0 .4rem;font-size:clamp(1.5rem,3.4vw,2.3rem);line-height:1.25}
+  .hero h1 small{display:block;font-weight:400;opacity:.85;font-size:.62em;margin-top:.45rem}
+  .hero .meta{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.2rem}
+  .hero .meta span{
+    font-size:.82rem;background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);
+    padding:.3rem .75rem;border-radius:999px;
+  }
+
+  .wrap{max-width:1180px;margin:0 auto;padding:2rem 1.5rem 4rem;display:grid;grid-template-columns:250px 1fr;gap:2.4rem;align-items:start}
+  aside.toc{position:sticky;top:1.4rem;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:1.1rem 1.1rem 1.3rem}
+  aside.toc h2{margin:.1rem 0 .7rem;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+  aside.toc ol{margin:0;padding-left:1.2rem;font-size:.9rem}
+  aside.toc li{margin:.3rem 0}
+  aside.toc a{color:var(--ink-2);text-decoration:none}
+  aside.toc a:hover{color:var(--accent);text-decoration:underline}
+
+  main{min-width:0}
+  section{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:1.6rem 1.7rem;margin-bottom:1.6rem}
+  section > h2{
+    margin:0 0 1.1rem;font-size:1.28rem;line-height:1.3;padding-bottom:.65rem;border-bottom:2px solid var(--accent-soft);
+  }
+  section > h2 .num{
+    display:inline-grid;place-items:center;min-width:1.9rem;height:1.9rem;margin-right:.6rem;
+    background:var(--accent);color:#fff;border-radius:9px;font-size:.9rem;vertical-align:middle;
+  }
+  section > h2 small{display:block;font-weight:400;color:var(--muted);font-size:.78rem;margin-top:.3rem;letter-spacing:.02em}
+  h3{font-size:1rem;margin:1.5rem 0 .6rem;color:var(--ink)}
+  h3:first-of-type{margin-top:.6rem}
+  p{margin:.6rem 0}
+  ul,ol{margin:.5rem 0 .9rem;padding-left:1.35rem}
+  li{margin:.32rem 0}
+  a{color:var(--accent)}
+
+  /* ---------- bilingual blocks ---------- */
+  .bi{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:.7rem 0}
+  .bi > div{
+    background:#fbfcfe;border:1px solid var(--line);border-radius:10px;padding:.7rem .85rem .75rem;
+  }
+  .bi > div::before{
+    display:block;font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);margin-bottom:.3rem;font-weight:700;
+  }
+  .bi .zh::before{content:"中文"}
+  .bi .en::before{content:"English"}
+  .bi p{margin:.15rem 0}
+  .bi ul{margin:.2rem 0 .2rem;padding-left:1.15rem}
+  .inline-bi{color:var(--ink-2)}
+  .inline-bi .zh,.inline-bi .en{display:block}
+  .inline-bi .en{color:var(--muted);font-size:.94em}
+
+  /* ---------- code ---------- */
+  .code{margin:.9rem 0 1.1rem;border-radius:12px;overflow:hidden;border:1px solid #1e293b}
+  .code .bar{
+    background:#1e293b;color:#cbd5e1;font-size:.76rem;letter-spacing:.06em;
+    padding:.42rem .9rem;font-family:ui-monospace,Menlo,Consolas,monospace;
+  }
+  .code pre{margin:0;background:var(--code-bg);color:var(--code-ink);padding:.95rem 1.1rem;overflow-x:auto;font-size:.855rem;line-height:1.62}
+  .code.term{border-color:#334155}
+  .code.term .bar{background:#0b1220;color:#93c5fd}
+  .code.term pre{background:#020617;color:#d1fae5}
+  pre.plain{background:var(--code-bg);color:var(--code-ink);padding:.95rem 1.1rem;border-radius:12px;overflow-x:auto;font-size:.855rem;line-height:1.62}
+
+  code.inline{background:#eef2f7;border:1px solid var(--line);border-radius:6px;padding:.08rem .38rem;font-size:.88em;color:#1e293b;white-space:nowrap}
+
+  /* ---------- callouts ---------- */
+  .note{border-left:4px solid var(--tip);background:var(--tip-soft);border-radius:0 10px 10px 0;padding:.75rem 1rem;margin:.9rem 0}
+  .note.warn{border-color:var(--warn);background:var(--warn-soft)}
+  .note.check{border-color:var(--ok);background:var(--ok-soft)}
+  .note .t{display:block;font-weight:700;font-size:.83rem;letter-spacing:.04em;margin-bottom:.2rem;color:var(--tip)}
+  .note.warn .t{color:var(--warn)}
+  .note.check .t{color:var(--ok)}
+  .note p{margin:.25rem 0}
+
+  /* ---------- tables ---------- */
+  .tbl-wrap{overflow-x:auto;margin:1rem 0}
+  table{border-collapse:collapse;width:100%;font-size:.88rem;background:#fff;min-width:560px}
+  th,td{border:1px solid var(--line);padding:.5rem .65rem;text-align:left;vertical-align:top}
+  thead th{background:#f1f5f9;font-size:.82rem;letter-spacing:.02em}
+  tbody tr:nth-child(even) td{background:#fafbfd}
+  td code,th code{white-space:nowrap}
+
+  /* ---------- checklist ---------- */
+  ul.check{list-style:none;padding-left:0}
+  ul.check li{position:relative;padding-left:1.7rem;margin:.42rem 0}
+  ul.check li::before{
+    content:"";position:absolute;left:0;top:.35rem;width:.95rem;height:.95rem;
+    border:2px solid #94a3b8;border-radius:4px;background:#fff;
+  }
+  ul.check li b{color:var(--accent)}
+
+  .pill{display:inline-block;font-size:.72rem;font-weight:700;letter-spacing:.06em;padding:.12rem .5rem;border-radius:999px;background:var(--accent-soft);color:var(--accent);vertical-align:middle}
+  .pill.ok{background:var(--ok-soft);color:var(--ok)}
+  .pill.warn{background:var(--warn-soft);color:var(--warn)}
+
+  footer{max-width:1180px;margin:0 auto;padding:0 1.5rem 3rem;color:var(--muted);font-size:.85rem}
+
+  @media (max-width:980px){
+    .wrap{grid-template-columns:1fr;gap:1.2rem}
+    aside.toc{position:static}
+    .bi{grid-template-columns:1fr}
+    section{padding:1.2rem 1.1rem}
+  }
+  @media print{
+    body{background:#fff;font-size:11.5pt}
+    .hero{background:#1e1b4b !important;-webkit-print-color-adjust:exact;print-color-adjust:exact;padding:1.2rem}
+    aside.toc,footer{display:none}
+    .wrap{display:block;padding:0}
+    section{border:none;padding:0;margin:0 0 1.1rem;page-break-inside:avoid-break}
+    .code pre,.code .bar,.tbl-wrap,.note{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+    section{break-inside:auto}
+    h2,h3{break-after:avoid}
+    .code,table,.note{break-inside:avoid}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-in">
+    <span class="kicker">3280 Backend Web Development · Week 3</span>
+    <h1>
+      Week 3 双语操作指南 · 从 Starter 到成品
+      <small>Bilingual Step-by-Step Guide · From <code>Lecture3demo_starter</code> to <code>week03_demo</code></small>
+    </h1>
+    <div class="meta">
+      <span>PHP 文件读写 / PHP File I/O</span>
+      <span>起点 Start: Lecture3demo_starter/</span>
+      <span>终点 Finish: week03_demo/</span>
+      <span>用时 Time: 60–90 分钟 min</span>
+      <span>实测环境 Tested on PHP 8.2.4</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <aside class="toc">
+    <h2>目录 / Contents</h2>
+    <ol>
+      <li><a href="#s1">任务说明 / The task</a></li>
+      <li><a href="#s2">文件夹差异 / Folder diff</a></li>
+      <li><a href="#s3">任务清单 / Checklist</a></li>
+      <li><a href="#s4">准备工作 / Setup</a></li>
+      <li><a href="#s5">步骤一 读整个文件 / Step 1</a></li>
+      <li><a href="#s6">步骤二 存在才读 / Step 2</a></li>
+      <li><a href="#s7">步骤三 写入与追加 / Step 3</a></li>
+      <li><a href="#s8">步骤四 修 1 行 / Step 4</a></li>
+      <li><a href="#s9">步骤五 组装 / Step 5</a></li>
+      <li><a href="#s10">验收清单 / Acceptance</a></li>
+      <li><a href="#s11">错误排查 / Troubleshooting</a></li>
+      <li><a href="#s12">函数速查 / Quick reference</a></li>
+      <li><a href="#s13">加练题目 / Exercises</a></li>
+      <li><a href="#s14">术语表 / Glossary</a></li>
+    </ol>
+  </aside>
+
+  <main>
+
+  <!-- ================= 1 ================= -->
+  <section id="s1">
+    <h2><span class="num">1</span>这次任务要做什么<small>What this task is about</small></h2>
+
+    <div class="bi">
+      <div class="zh">
+        <p><code class="inline">Lecture3demo_starter/</code> 是一个「半成品」：它只给你<b>工具箱</b>（<code class="inline">inc/file_utility.php</code> 里的 5 个函数）和<b>数据</b>（<code class="inline">data/</code> 里的 4 个文本文件），<b>没有任何可以运行的页面</b>。</p>
+        <p>你的任务：从零写出 4 个演示页面 + 修好工具箱里的 1 行代码 → 得到 <code class="inline">week03_demo/</code>。</p>
+      </div>
+      <div class="en">
+        <p><code class="inline">Lecture3demo_starter/</code> is a half-finished project. It gives you the <b>toolbox</b> (5 functions in <code class="inline">inc/file_utility.php</code>) and the <b>data</b> (<code class="inline">data/</code>), but <b>no runnable page at all</b>.</p>
+        <p>Your job: write 4 demo pages from scratch and fix 1 line in the toolbox, ending up with <code class="inline">week03_demo/</code>.</p>
+      </div>
+    </div>
+
+    <h3>核心能力 / Core skills</h3>
+    <ul>
+      <li>一次读入整个文件 / read a whole file — <code class="inline">file_get_contents()</code></li>
+      <li>读前判断文件是否存在于 / check existence first — <code class="inline">file_exists()</code></li>
+      <li>写入与追加 / write and append — <code class="inline">file_put_contents()</code>、<code class="inline">FILE_APPEND</code></li>
+      <li>用句柄逐行读、逐行写 / line-by-line with a handle — <code class="inline">fopen()</code> <code class="inline">fgets()</code> <code class="inline">fgetcsv()</code> <code class="inline">fwrite()</code> <code class="inline">fclose()</code></li>
+      <li>函数封装与复用 / reusable functions — <code class="inline">require_once</code> + 自定义函数</li>
+      <li>错误处理 / error handling — <code class="inline">try / catch / finally</code></li>
+    </ul>
+  </section>
+
+  <!-- ================= 2 ================= -->
+  <section id="s2">
+    <h2><span class="num">2</span>两个文件夹的差别（任务拆解表）<small>Diff of the two folders — the task breakdown</small></h2>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>路径 Path</th><th>Starter</th><th>week03_demo</th>
+            <th>差别与要做的事 / Difference &amp; what to do</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><code>data/data.txt</code></td><td>有</td><td>有</td><td>内容相同（60 字节）/ identical — 不用动</td></tr>
+          <tr><td><code>data/orders.txt</code></td><td>有</td><td>有</td><td>内容相同 / identical — 不用动</td></tr>
+          <tr><td><code>data/orders.csv</code></td><td>有</td><td>有</td><td>内容相同 / identical — 不用动</td></tr>
+          <tr><td><code>data/users.txt</code></td><td>2 行 / 2 lines</td><td>3 行 / 3 lines</td><td>差异是<b>运行 <code>04</code></b> 追加出来的，不用手改 / produced by <b>running</b> <code>04</code></td></tr>
+          <tr><td><code>data/newfile.txt</code></td><td><span class="pill warn">无</span></td><td>52 字节</td><td>由 <code>03</code> <b>运行时自动生成</b>，不要手写 / created at runtime by <code>03</code></td></tr>
+          <tr><td><code>inc/file_utility.php</code></td><td><code>fopen(...,"r")</code></td><td><code>fopen(...,"a")</code></td><td><b>修改 1 行</b>（第 57 行）/ edit 1 line (line 57)</td></tr>
+          <tr><td><code>01_read_file.php</code></td><td><span class="pill warn">无</span></td><td>有</td><td><b>新写</b> / create new</td></tr>
+          <tr><td><code>02_read_file_exist.php</code></td><td><span class="pill warn">无</span></td><td>有</td><td><b>新写</b> / create new</td></tr>
+          <tr><td><code>03_write_file.php</code></td><td><span class="pill warn">无</span></td><td>有</td><td><b>新写</b> / create new</td></tr>
+          <tr><td><code>04_file_read_write.php</code></td><td><span class="pill warn">无</span></td><td>有</td><td><b>新写</b> / create new</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <span class="t">结论 / Conclusion</span>
+      <p>全部工作量 = <b>新建 4 个 PHP 文件（约 60 行）+ 修改 1 行 + 运行 4 次</b>。不需要数据库、不需要框架、不需要改任何配置。</p>
+      <p>Total work = <b>4 new PHP files (~60 lines) + 1 edited line + 4 runs</b>. No database, no framework, no config changes.</p>
+    </div>
+  </section>
+
+  <!-- ================= 3 ================= -->
+  <section id="s3">
+    <h2><span class="num">3</span>任务清单<small>Task checklist</small></h2>
+    <ul class="check">
+      <li><b>T1</b> 新建 <code class="inline">01_read_file.php</code>：一次读完整个文件并输出字节数 / read the whole file and report its size</li>
+      <li><b>T2</b> 新建 <code class="inline">02_read_file_exist.php</code>：先判断文件是否存在再读取（含一个"错误路径"演示）/ guard reads with <code class="inline">file_exists()</code></li>
+      <li><b>T3</b> 新建 <code class="inline">03_write_file.php</code>：用 heredoc 写文件，再追加内容且保留原有内容 / write, then append</li>
+      <li><b>T4</b> 修改 <code class="inline">inc/file_utility.php</code> 第 57 行：<code class="inline">"r"</code> → <code class="inline">"a"</code> / make <code class="inline">fileWrite()</code> writable</li>
+      <li><b>T5</b> 新建 <code class="inline">04_file_read_write.php</code>：<code class="inline">require_once</code> 引入工具箱并调用 4 个函数 / glue everything together</li>
+      <li><b>T6</b> 运行验收：逐个运行 4 个文件，对照第 10 节检查结果 / run all 4 and verify</li>
+    </ul>
+  </section>
+
+  <!-- ================= 4 ================= -->
+  <section id="s4">
+    <h2><span class="num">4</span>准备工作<small>Setup</small></h2>
+
+    <h3>4.1 确认 PHP 可用 / Check PHP</h3>
+    <div class="code term">
+      <div class="bar">Terminal</div>
+      <pre>php -v</pre>
+    </div>
+    <div class="bi">
+      <div class="zh">应显示 <code class="inline">PHP 8.x</code>（例如 <code class="inline">PHP 8.2.4 (cli)</code>）。若提示 <code class="inline">command not found</code>，请安装 XAMPP / MAMP，或使用 XAMPP 自带路径：</div>
+      <div class="en">You should see <code class="inline">PHP 8.x</code> (e.g. <code class="inline">PHP 8.2.4 (cli)</code>). If you get <code class="inline">command not found</code>, install XAMPP/MAMP or use the bundled binary:</div>
+    </div>
+    <div class="code term">
+      <div class="bar">Terminal</div>
+      <pre>/Applications/XAMPP/xamppfiles/bin/php -v</pre>
+    </div>
+
+    <h3>4.2 复制一份工作目录 / Copy the working folder</h3>
+    <div class="bi">
+      <div class="zh">也可以直接在 <code class="inline">Lecture3demo_starter/</code> 里写，但更推荐先复制出新文件夹（例如 <code class="inline">my_week03/</code>），出错时可以随时回到干净的起点。</div>
+      <div class="en">You may work directly inside <code class="inline">Lecture3demo_starter/</code>, but it is safer to copy it to a new folder (e.g. <code class="inline">my_week03/</code>) so you can always restart from a clean state.</div>
+    </div>
+    <div class="code term">
+      <div class="bar">Terminal</div>
+      <pre>cp -R Lecture3demo_starter my_week03
+cd my_week03</pre>
+    </div>
+
+    <h3>4.3 两种运行方式 / Two ways to run</h3>
+    <div class="bi">
+      <div class="zh"><b>方式 A（推荐）：命令行</b> —— 输出最清楚，能看到真正的换行。</div>
+      <div class="en"><b>Way A (recommended): CLI</b> — the clearest output, real line breaks visible.</div>
+    </div>
+    <div class="code term">
+      <div class="bar">Terminal</div>
+      <pre>cd my_week03          # 必须在项目根目录运行 / must run from the project root
+php 01_read_file.php</pre>
+    </div>
+    <div class="bi">
+      <div class="zh"><b>方式 B：浏览器（XAMPP / Apache）</b> —— 把文件夹放进 <code class="inline">htdocs</code>，启动 Apache 后访问。</div>
+      <div class="en"><b>Way B: browser (XAMPP / Apache)</b> — copy the folder into <code class="inline">htdocs</code>, start Apache, then open the URL.</div>
+    </div>
+    <div class="code term">
+      <div class="bar">Terminal</div>
+      <pre>cp -R my_week03 /Applications/XAMPP/xamppfiles/htdocs/week03
+# 然后访问 / then open:
+# http://localhost/week03/01_read_file.php</pre>
+    </div>
+
+    <div class="note">
+      <span class="t">提示 / Tip</span>
+      <p>脚本里大量使用 <code class="inline">\n</code>，浏览器会把它当成空格，网页上可能"挤成一行"。要看真实换行，请用 <b>查看网页源代码</b>（macOS <code class="inline">⌘ + U</code>，Windows <code class="inline">Ctrl + U</code>）或直接在命令行运行。</p>
+      <p>The scripts use <code class="inline">\n</code>, which a browser renders as a space. Use <i>View Source</i> or the terminal to see real line breaks.</p>
+    </div>
+    <div class="note warn">
+      <span class="t">警告 / Warning</span>
+      <p><code class="inline">04_file_read_write.php</code> 用的是<b>相对路径</b>（<code class="inline">data/users.txt</code>），所以命令行运行时必须先 <code class="inline">cd</code> 到项目根目录，否则会看到 <code class="inline">The file does not exist</code>。</p>
+      <p><code class="inline">04</code> uses <b>relative paths</b>, so you must <code class="inline">cd</code> into the project root first, otherwise you get <code class="inline">The file does not exist</code>.</p>
+    </div>
+  </section>
+
+  <!-- ================= 5 ================= -->
+  <section id="s5">
+    <h2><span class="num">5</span>步骤一 · 一次读完整个文件<small>Step 1 · <code>01_read_file.php</code> — read the whole file at once</small></h2>
+
+    <div class="bi">
+      <div class="zh"><b>目标：</b>用最短的代码把一个文本文件全部读出来并显示，同时报告文件大小。</div>
+      <div class="en"><b>Goal:</b> read an entire text file in one call, print it, and report its size.</div>
+    </div>
+
+    <div class="code">
+      <div class="bar">01_read_file.php</div>
+      <pre>&lt;?php
+
+$file = __DIR__ . '/data/data.txt';
+
+$text = file_get_contents($file);
+
+print "File content are \n" . $text;
+
+$numBytes = filesize($file);
+
+print "\nFilesize is " . $numBytes;</pre>
+    </div>
+
+    <h3>逐行说明 / Line-by-line</h3>
+    <ul>
+      <li><code class="inline">__DIR__</code> 是当前 PHP 文件所在<b>绝对目录</b>，用它拼路径可避免"换目录运行就找不到文件" / the absolute directory of the current file.</li>
+      <li><code class="inline">__DIR__ . '/data/data.txt'</code> 拼出绝对路径（斜杠 <code class="inline">/</code> 要自己加）/ builds an absolute path — remember the slash.</li>
+      <li><code class="inline">file_get_contents($file)</code> <b>一次把整个文件读成一个字符串</b>，自动打开、自动关闭，不需要 <code class="inline">fopen()</code> / reads the whole file into one string and handles open/close for you.</li>
+      <li><code class="inline">print "…\n" . $text;</code> 用 <code class="inline">.</code> 连接字符串；<code class="inline">\n</code> 只有在双引号里才会被解释成换行 / <code class="inline">.</code> concatenates; <code class="inline">\n</code> is parsed only inside double quotes.</li>
+      <li><code class="inline">filesize($file)</code> 返回文件字节数 / returns the size in bytes.</li>
+      <li>文件<b>没有闭合标签 <code class="inline">?&gt;</code></b> —— 纯 PHP 文件建议省略，避免多余空白输出 / no closing <code class="inline">?&gt;</code>, which is recommended for pure-PHP files.</li>
+    </ul>
+
+    <h3>运行 / Run</h3>
+    <div class="code term">
+      <div class="bar">Terminal</div>
+      <pre>php 01_read_file.php</pre>
+    </div>
+
+    <h3>预期输出 / Expected <span class="pill ok">PHP 8.2.4 实测</span></h3>
+    <div class="code term">
+      <div class="bar">Output</div>
+      <pre>File content are
+Hello there
+This is my secret code
+Please do not open it
+
+Filesize is 60</pre>
+    </div>
+
+    <div class="note check">
+      <span class="t">检查点 / Checkpoint</span>
+      <p>① 三行文件内容都出现；② 文件大小是 <b>60</b> 字节。若不对，先确认 <code class="inline">data.txt</code> 没有被改动过。</p>
+      <p>① all three lines appear; ② the size is <b>60</b> bytes. Otherwise check that <code class="inline">data.txt</code> was not modified.</p>
+    </div>
+
+    <div class="note">
+      <span class="t">练习 / Exercise</span>
+      <p>把 <code class="inline">filesize()</code> 换成 <code class="inline">strlen($text)</code> 对比结果；再试 <code class="inline">count(file($file))</code>，猜猜得到什么（提示：行数）。</p>
+      <p>Compare <code class="inline">strlen($text)</code> with <code class="inline">filesize()</code>, then try <code class="inline">count(file($file))</code> (hint: number of lines).</p>
+    </div>
+  </section>
+
+  <!-- ================= 6 ================= -->
+  <section id="s6">
+    <h2><span class="num">6</span>步骤二 · 存在才读<small>Step 2 · <code>02_read_file_exist.php</code> — read only if it exists</small></h2>
+
+    <div class="bi">
+      <div class="zh"><b>目标：</b>读文件前先用 <code class="inline">file_exists()</code> 判断，避免直接报 Warning；同时<b>故意演示一个错误路径</b>，理解绝对路径与相对路径的区别。</div>
+      <div class="en"><b>Goal:</b> guard reads with <code class="inline">file_exists()</code>, and deliberately demo a wrong path to understand absolute vs. relative paths.</div>
+    </div>
+
+    <div class="code">
+      <div class="bar">02_read_file_exist.php</div>
+      <pre>&lt;?php
+
+$file1 = __DIR__ . '/data/data.txt';
+$file2 = __DIR__ . 'data.txt';
+
+if(file_exists($file1)){
+    print 'File 1 exist';
+    print file_get_contents($file1);
+}
+
+if(file_exists($file2)){
+    print 'File 2 exist';
+    print file_get_contents($file2);
+}</pre>
+    </div>
+
+    <h3>逐行说明 / Line-by-line</h3>
+    <ul>
+      <li><code class="inline">$file1</code> 是<b>正确路径</b>：<code class="inline">项目目录/data/data.txt</code> / a <b>correct</b> absolute path.</li>
+      <li><code class="inline">$file2 = __DIR__ . 'data.txt'</code> 是<b>故意写错的</b>：少了 <code class="inline">/data/</code> 子目录，实际指向不存在的 <code class="inline">项目目录data.txt</code> / intentionally wrong — the <code class="inline">/data/</code> part is missing.</li>
+      <li><code class="inline">file_exists($path)</code> 返回 <code class="inline">true</code> / <code class="inline">false</code>，常用于读、写、删除前的安全检查 / a boolean used as a safety check.</li>
+      <li>只有 <code class="inline">if</code> 成立时才调用 <code class="inline">file_get_contents()</code>，所以<b>不会</b>出现 "Failed to open stream" 警告 / the read only runs when the check passes, so no warning appears.</li>
+      <li>两个 <code class="inline">print</code> 之间没有 <code class="inline">\n</code>，所以 <code class="inline">File 1 exist</code> 会和文件内容连在一起 / no <code class="inline">\n</code> between the prints, so the output runs together.</li>
+    </ul>
+
+    <h3>运行与预期输出 / Run &amp; expected <span class="pill ok">实测</span></h3>
+    <div class="code term">
+      <div class="bar">Terminal</div>
+      <pre>php 02_read_file_exist.php
+
+File 1 existHello there
+This is my secret code
+Please do not open it</pre>
+    </div>
+
+    <div class="bi">
+      <div class="zh">只输出 File 1 —— 因为 File 2 的路径不存在，<code class="inline">file_exists()</code> 返回 <code class="inline">false</code>，第二次读取被"拦住"了。这就是写文件操作前先判断的价值。</div>
+      <div class="en">Only File 1 appears: File 2's path does not exist, so <code class="inline">file_exists()</code> returns <code class="inline">false</code> and the second read is skipped. That is the value of checking first.</div>
+    </div>
+
+    <h3>修正练习 / Fix it exercise</h3>
+    <div class="code">
+      <div class="bar">把 $file2 改成正确路径 / fix $file2</div>
+      <pre>$file2 = __DIR__ . '/data/data.txt';</pre>
+    </div>
+    <div class="bi">
+      <div class="zh">再运行一次，会看到 <code class="inline">File 1 exist…</code> 与 <code class="inline">File 2 exist…</code> 两段内容都输出。</div>
+      <div class="en">Run again: both <code class="inline">File 1 exist…</code> and <code class="inline">File 2 exist…</code> blocks are printed.</div>
+    </div>
+    <div class="note check">
+      <span class="t">检查点 / Checkpoint</span>
+      <p>你能解释"为什么 File 2 没有输出"以及"改哪里就能输出"。</p>
+      <p>You can explain why File 2 is skipped and what to change to make it appear.</p>
+    </div>
+  </section>
+
+  <!-- ================= 7 ================= -->
+  <section id="s7">
+    <h2><span class="num">7</span>步骤三 · 写入与追加<small>Step 3 · <code>03_write_file.php</code> — write and append</small></h2>
+
+    <div class="bi">
+      <div class="zh"><b>目标：</b>用 heredoc 语法准备多行字符串，用 <code class="inline">file_put_contents()</code> 先<b>覆盖写</b>、再<b>追加写</b>。</div>
+      <div class="en"><b>Goal:</b> prepare multi-line strings with heredoc, then <b>overwrite</b> and <b>append</b> with <code class="inline">file_put_contents()</code>.</div>
+    </div>
+
+    <div class="code">
+      <div class="bar">03_write_file.php</div>
+      <pre>&lt;?php
+
+$file = __DIR__ . '/data/newfile.txt';
+
+$content1 = &lt;&lt;&lt; CONTENT
+the cat
+sat
+on the mat
+
+CONTENT;
+
+file_put_contents($file,$content1);
+
+$content2 = &lt;&lt;&lt; CONTENT
+the rat
+spat
+on the cat!
+CONTENT;
+
+file_put_contents($file,$content2,FILE_APPEND);</pre>
+    </div>
+
+    <h3>heredoc 的 4 条规则 / 4 rules of heredoc</h3>
+    <ul>
+      <li><code class="inline">&lt;&lt;&lt; CONTENT</code> 后面是自定义标识符，用来写多行字符串，里面的换行原样保留 / the identifier after <code class="inline">&lt;&lt;&lt;</code> is your choice; line breaks are preserved exactly.</li>
+      <li><b>结束标识符必须单独占一行</b>（PHP 7.3+ 允许缩进，缩进会从字符串中移除）/ the closing identifier must be on its own line (PHP 7.3+ allows indentation, which is stripped).</li>
+      <li>结束标识符后面的 <code class="inline">;</code> 是语句结束符，不能漏 / the <code class="inline">;</code> after it is the statement terminator.</li>
+      <li><b>紧挨结束标识符的那一个换行不计入字符串。</b><code class="inline">$content1</code> 在 <code class="inline">CONTENT;</code> 前多留了一个<b>空行</b>，所以它以换行结尾；<code class="inline">$content2</code> 没有空行，所以<b>不以换行结尾</b> / the newline immediately before the closing identifier is <b>not</b> part of the string.</li>
+    </ul>
+
+    <h3>file_put_contents 的两种行为 / Two behaviours</h3>
+    <ul>
+      <li><code class="inline">file_put_contents($file, $content1)</code> 默认<b>覆盖</b>：原内容先被清空；文件不存在时自动创建 / default is <b>overwrite</b>; creates the file if missing.</li>
+      <li>第三个参数 <code class="inline">FILE_APPEND</code> 表示<b>追加到末尾、不覆盖</b> —— 本节课最重要的标志位 / <code class="inline">FILE_APPEND</code> appends instead of overwriting — the key flag of this lesson.</li>
+      <li>这个脚本<b>没有任何输出</b>，它的成果在文件里；返回值是<b>写入的字节数</b> / the script prints nothing; its result is in the file. The return value is the number of bytes written.</li>
+    </ul>
+
+    <h3>运行与预期结果 / Run &amp; expected</h3>
+    <div class="code term">
+      <div class="bar">Terminal</div>
+      <pre>php 03_write_file.php
+# 无输出，这是正常的 / no output — that is expected
+
+php -r "echo filesize('data/newfile.txt');"
+52</pre>
+    </div>
+    <div class="bi">
+      <div class="zh">打开自动生成的 <code class="inline">data/newfile.txt</code>，应是 6 行、共 <b>52 字节</b> = <code class="inline">$content1</code>(26) + <code class="inline">$content2</code>(26)。注意 "the mat" 后有换行，而最后一行没有 —— 正是上面第 4 条规则的效果。</div>
+      <div class="en">Open the generated <code class="inline">data/newfile.txt</code>: 6 lines, <b>52 bytes</b> = <code class="inline">$content1</code>(26) + <code class="inline">$content2</code>(26). "the mat" is followed by a newline while the last line is not — exactly rule 4 above.</div>
+    </div>
+    <div class="code term">
+      <div class="bar">data/newfile.txt</div>
+      <pre>the cat
+sat
+on the mat
+the rat
+spat
+on the cat!</pre>
+    </div>
+
+    <div class="note check">
+      <span class="t">检查点 / Checkpoint</span>
+      <p>① 文件被自动创建；② 第二次写入<b>没有</b>覆盖第一次（共 6 行）；③ 若把 <code class="inline">FILE_APPEND</code> 去掉，重跑后只剩 3 行，且你能解释原因。</p>
+      <p>① the file is auto-created; ② the second write did not erase the first (6 lines); ③ removing <code class="inline">FILE_APPEND</code> leaves only 3 lines and you can explain why.</p>
+    </div>
+
+    <div class="note">
+      <span class="t">练习 / Exercise</span>
+      <p>从终端追加一行，体会同样的机制 / append a line from the terminal:</p>
+      <div class="code term">
+        <div class="bar">Terminal</div>
+        <pre>php -r "file_put_contents('data/newfile.txt', \"a big fat rat\n\", FILE_APPEND);"</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 8 ================= -->
+  <section id="s8">
+    <h2><span class="num">8</span>步骤四 · 修 1 行，让 <code>fileWrite()</code> 真正能写<small>Step 4 · Edit one line in <code>inc/file_utility.php</code></small></h2>
+
+    <div class="bi">
+      <div class="zh"><b>目标：</b>找到并修改 <b>1 行</b>，让写入函数生效。这是整个任务中唯一的"改错"环节。</div>
+      <div class="en"><b>Goal:</b> locate and fix <b>one line</b> so the write function works. This is the only bug-fixing step.</div>
+    </div>
+
+    <div class="bi">
+      <div class="zh">打开 <code class="inline">inc/file_utility.php</code>，找到 <code class="inline">fileWrite()</code>（约第 55 行起），里面有这一行：</div>
+      <div class="en">Open <code class="inline">inc/file_utility.php</code>, find <code class="inline">fileWrite()</code> (from about line 55), and look at this line:</div>
+    </div>
+
+    <div class="code">
+      <div class="bar">inc/file_utility.php · 第 57 行 / line 57</div>
+      <pre>// 改前 / before
+$fh = fopen($fileName, "r"); // change to ab next
+
+// 改后 / after
+$fh = fopen($fileName, "a"); // change to ab next</pre>
+    </div>
+
+    <h3>为什么 / Why — fopen 模式对照表 / mode reference</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>模式 Mode</th><th>含义 Meaning</th><th>能读 Read</th><th>能写 Write</th><th>文件不存在时 If missing</th><th>指针 Pointer</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>r</code></td><td>只读 / read only</td><td>✔</td><td>✘</td><td>失败 / fails</td><td>开头 / start</td></tr>
+          <tr><td><code>r+</code></td><td>读写 / read + write</td><td>✔</td><td>✔</td><td>失败 / fails</td><td>开头 / start</td></tr>
+          <tr><td><code>w</code></td><td>只写，<b>清空</b> / write, truncates</td><td>✘</td><td>✔</td><td>自动创建 / creates</td><td>开头 / start</td></tr>
+          <tr><td><code>w+</code></td><td>读写，<b>清空</b> / read + write, truncates</td><td>✔</td><td>✔</td><td>自动创建 / creates</td><td>开头 / start</td></tr>
+          <tr><td><code>a</code></td><td><b>追加</b> / append</td><td>✘</td><td>✔</td><td>自动创建 / creates</td><td>末尾 / end</td></tr>
+          <tr><td><code>a+</code></td><td>读 + 追加 / read + append</td><td>✔</td><td>✔</td><td>自动创建 / creates</td><td>末尾 / end</td></tr>
+          <tr><td><code>x</code> / <code>x+</code></td><td>独占创建（已存在则失败）/ exclusive create</td><td>✘ / ✔</td><td>✔</td><td>只在不存在时创建 / creates only if absent</td><td>开头 / start</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="bi">
+      <div class="zh">
+        <p>在 <code class="inline">"r"</code>（只读）句柄上调用 <code class="inline">fwrite()</code> 会失败，PHP 会提示：</p>
+        <p><code class="inline">PHP Notice: fwrite(): Write of 18 bytes failed with errno=9 Bad file descriptor</code></p>
+        <p>因为 <code class="inline">fwrite()</code> 返回 <code class="inline">false</code>，<code class="inline">if (! fwrite(...))</code> 成立，于是代码<b>主动抛出异常</b>，输出 <code class="inline">Error (File: .../file_utility.php, line 60): Could not open the file for writing!</code>。源码里的注释 <code class="inline">// why the exception was raised? bcause the file was opened for reading!</code> 已经给出答案。</p>
+        <p>改成 <code class="inline">"a"</code> 后 <code class="inline">fwrite()</code> 成功，且原有内容不被覆盖 —— 正好符合 <code class="inline">04</code> 里"给 users.txt 增加一条记录"的需求。</p>
+      </div>
+      <div class="en">
+        <p>Calling <code class="inline">fwrite()</code> on a <code class="inline">"r"</code> (read-only) handle fails with:</p>
+        <p><code class="inline">PHP Notice: fwrite(): Write of 18 bytes failed with errno=9 Bad file descriptor</code></p>
+        <p>Since <code class="inline">fwrite()</code> returns <code class="inline">false</code>, <code class="inline">if (! fwrite(...))</code> is true and your own exception is thrown: <code class="inline">Error (File: .../file_utility.php, line 60): Could not open the file for writing!</code>. The in-code comment already gives the answer.</p>
+        <p>With <code class="inline">"a"</code>, <code class="inline">fwrite()</code> succeeds and existing data is preserved — exactly what <code class="inline">04</code> needs.</p>
+      </div>
+    </div>
+
+    <div class="note">
+      <span class="t">提示 / Tip</span>
+      <p><code class="inline">"ab"</code> 里的 <code class="inline">b</code> 表示二进制模式，在 Windows 上更安全；macOS/Linux 上 <code class="inline">"a"</code> 与 <code class="inline">"ab"</code> 效果相同。</p>
+      <p>The <code class="inline">b</code> in <code class="inline">"ab"</code> means binary mode (safer on Windows, equivalent on macOS/Linux).</p>
+    </div>
+
+    <h3>改前 / 改后对比 <span class="pill ok">实测</span></h3>
+    <div class="bi">
+      <div class="zh"><b>改前</b>（<code class="inline">"r"</code>）：运行 <code class="inline">04</code> 后 <code class="inline">users.txt</code> <b>毫无变化</b>，并输出上面的 Notice 与 Error。<br><b>改后</b>（<code class="inline">"a"</code>）：<code class="inline">users.txt</code> 末尾新增 <code class="inline">john\tjohn@doe.com</code>（Tab 分隔），文件从 <b>44 字节</b> 变成 <b>62 字节</b>。</div>
+      <div class="en"><b>Before</b> (<code class="inline">"r"</code>): after running <code class="inline">04</code>, <code class="inline">users.txt</code> is <b>unchanged</b> and the Notice/Error lines appear.<br><b>After</b> (<code class="inline">"a"</code>): a new line <code class="inline">john\tjohn@doe.com</code> is appended — the file grows from <b>44</b> to <b>62</b> bytes.</div>
+    </div>
+
+    <div class="note check">
+      <span class="t">检查点 / Checkpoint — 确认改对了 / confirm</span>
+      <div class="code term">
+        <div class="bar">Terminal</div>
+        <pre>grep -n 'fopen($fileName' inc/file_utility.php
+# 57:        $fh = fopen($fileName, "a"); // change to ab next</pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= 9 ================= -->
+  <section id="s9">
+    <h2><span class="num">9</span>步骤五 · 把工具箱拼装起来<small>Step 5 · <code>04_file_read_write.php</code> — glue it all together</small></h2>
+
+    <div class="bi">
+      <div class="zh"><b>目标：</b>引入工具箱，把 4 个函数按"读数组 → 逐行读 → 读 CSV → 追加写入"的顺序调用一次。</div>
+      <div class="en"><b>Goal:</b> include the toolbox and call all four functions in order.</div>
+    </div>
+
+    <div class="code">
+      <div class="bar">04_file_read_write.php</div>
+      <pre>&lt;?php
+
+require_once 'inc/file_utility.php';
+
+// read the file as an array
+$file = 'data/users.txt';
+readArray($file);
+
+// read using file_exist() and fgets()
+$file = 'data/orders.txt';
+readData($file);
+
+// read using file_exist() and fgetcsv()
+$file = 'data/orders.csv';
+readCSV($file);
+
+// write a new entry to users.txt
+$file = 'data/users.txt';
+$data = "\njohn\tjohn@doe.com";
+
+fileWrite($file,$data);</pre>
+    </div>
+
+    <h3>逐行说明 / Line-by-line</h3>
+    <ul>
+      <li><code class="inline">require_once 'inc/file_utility.php';</code> 保证工具箱<b>只引入一次</b>，避免"函数重复定义"的致命错误 / includes the toolbox exactly once.</li>
+      <li>这里的路径是<b>相对路径</b>（相对运行时的工作目录），所以必须在项目根目录执行 / these are <b>relative</b> paths, so run from the project root.</li>
+      <li><code class="inline">$data = "\njohn\tjohn@doe.com";</code> 以<b>换行开头</b>（原文件最后一行没有换行符，先补一个才不会接在同一行后）；<code class="inline">\t</code> 是 Tab，因为 <code class="inline">readArray()</code> 用 <code class="inline">explode("\t")</code> 切分，<b>必须用 Tab，不能用空格</b>。</li>
+      <li>In English: the string starts with <code class="inline">\n</code> to begin a new line, and uses <code class="inline">\t</code> because <code class="inline">readArray()</code> splits on tab — <b>a space will not work</b>.</li>
+    </ul>
+
+    <h3>四次调用对照 / The four calls</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead>
+          <tr><th>调用 Call</th><th>函数 Function</th><th>内部机制 Internals</th><th>输出 Output</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><code>readArray('data/users.txt')</code></td><td><code>readArray()</code></td>
+            <td><code>file()</code> 一次读成数组 → <code>foreach</code> → <code>explode("\t")</code> → <code>list($name,$email)</code> → <code>trim()</code> 去行尾换行</td>
+            <td>每行一个 <code>mailto:</code> 链接</td>
+          </tr>
+          <tr>
+            <td><code>readData('data/orders.txt')</code></td><td><code>readData()</code> → <code>openFile()</code></td>
+            <td><code>file_exists()</code> → <code>fopen('r')</code> → <code>while(!feof) echo fgets()</code> → <code>fclose()</code></td>
+            <td>原样文本 / raw text</td>
+          </tr>
+          <tr>
+            <td><code>readCSV('data/orders.csv')</code></td><td><code>readCSV()</code></td>
+            <td><code>fgetcsv($fh,1024,',')</code> 按逗号切分 → 双层循环拼 HTML 表格</td>
+            <td><code>&lt;table&gt;</code> + <code>&lt;tr&gt;/&lt;td&gt;</code></td>
+          </tr>
+          <tr>
+            <td><code>fileWrite('data/users.txt', $data)</code></td><td><code>fileWrite()</code></td>
+            <td>第 57 行 <code>fopen('a')</code> → <code>fwrite()</code> → <code>try/catch/finally</code> → <code>fclose()</code></td>
+            <td><b>无输出</b>，但文件被追加一行</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>运行与预期输出 / Run &amp; expected <span class="pill ok">实测</span></h3>
+    <div class="code term">
+      <div class="bar">Terminal</div>
+      <pre>cd my_week03
+php 04_file_read_write.php</pre>
+    </div>
+    <div class="code term">
+      <div class="bar">Output</div>
+      <pre>&lt;a href="mailto:joe@douglas.com"&gt;Joe&lt;/a&gt; &lt;br&gt;
+&lt;a href="mailto:douglas@joe.com"&gt;Douglas&lt;/a&gt; &lt;br&gt;
+Order Type, Customer ID, Amount
+regular, C123A, 4
+regular, C223B, 1
+special, C112A, 1&lt;table&gt;
+&lt;tr&gt;
+	&lt;td&gt;Order Type&lt;/td&gt;
+	&lt;td&gt;Name&lt;/td&gt;
+	&lt;td&gt;Amount&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+	&lt;td&gt;special&lt;/td&gt;
+	&lt;td&gt;Jason Gilmore&lt;/td&gt;
+	&lt;td&gt;4&lt;/td&gt;
+&lt;/tr&gt;
+... 共 5 行数据 / 5 data rows</pre>
+    </div>
+    <div class="bi">
+      <div class="zh">顺序是：2 个邮件链接（<code class="inline">users.txt</code>）→ <code class="inline">orders.txt</code> 原文 → <code class="inline">orders.csv</code> 的 HTML 表格。用浏览器打开时表格会真正渲染（命令行只能看到源码）。</div>
+      <div class="en">Order: the two mail links (<code class="inline">users.txt</code>) → raw <code class="inline">orders.txt</code> → the HTML table from <code class="inline">orders.csv</code>. In a browser the table is actually rendered.</div>
+    </div>
+
+    <div class="note check">
+      <span class="t">检查点 / Checkpoint</span>
+      <p>① <code class="inline">users.txt</code> 末尾出现新行 <code class="inline">john\tjohn@doe.com</code>；② 没有 <code class="inline">Warning</code>/<code class="inline">Notice</code>/<code class="inline">Fatal error</code>；③ 再运行一次会<b>再追加</b>一行 —— 追加不是幂等操作（这点和 <code class="inline">03</code> 不同）。</p>
+      <p>① the new line appears in <code class="inline">users.txt</code>; ② no PHP diagnostics; ③ running again appends a second line — appending is not idempotent, unlike <code class="inline">03</code>.</p>
+    </div>
+
+    <div class="note warn">
+      <span class="t">警告 / Warning — 仓库里 users.txt 的一个坑 / a gotcha in this repo</span>
+      <p>本仓库 <code class="inline">week03_demo/data/users.txt</code> 第 1 行用的是<b>空格</b>而不是 Tab（<code class="inline">Joe joe@douglas.com</code>），所以会看到 <code class="inline">PHP Warning: Undefined array key 1 ... on line 9</code>，且输出 <code class="inline">&lt;a href="mailto:"&gt;Joe joe@douglas.com&lt;/a&gt;</code>。</p>
+      <p>This repo's <code class="inline">users.txt</code> uses a space instead of a tab on line 1, which triggers the warning above and an empty <code class="inline">mailto:</code>. Fix: replace the space with a <b>tab</b> (see Troubleshooting item 6).</p>
+    </div>
+  </section>
+
+  <!-- ================= 10 ================= -->
+  <section id="s10">
+    <h2><span class="num">10</span>验收清单<small>Acceptance checklist</small></h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>#</th><th>检查项 Check</th><th>期望结果 Expected</th></tr></thead>
+        <tbody>
+          <tr><td>1</td><td><code>php 01_read_file.php</code></td><td>输出 3 行文本 + <code>Filesize is 60</code></td></tr>
+          <tr><td>2</td><td><code>php 02_read_file_exist.php</code></td><td>只输出 <code>File 1 exist…</code>（File 2 被跳过）</td></tr>
+          <tr><td>3</td><td><code>php 03_write_file.php</code> 后查看 <code>data/newfile.txt</code></td><td>6 行、52 字节；重复运行结果不变</td></tr>
+          <tr><td>4</td><td><code>inc/file_utility.php</code> 第 57 行</td><td>模式是 <code>"a"</code></td></tr>
+          <tr><td>5</td><td><code>php 04_file_read_write.php</code></td><td>2 个链接 + <code>orders.txt</code> 原文 + 5 行表格数据，无报错</td></tr>
+          <tr><td>6</td><td><code>data/users.txt</code></td><td>比初始多一行 <code>john\tjohn@doe.com</code>（44 → 62 字节）</td></tr>
+          <tr><td>7</td><td>浏览器访问 <code>http://localhost/week03/04_file_read_write.php</code></td><td>邮箱是可点击链接，CSV 渲染成表格</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="bi">
+      <div class="zh">7 项全部通过，说明你已经完成了从 <code class="inline">Lecture3demo_starter</code> 到 <code class="inline">week03_demo</code> 的全部编程工作。</div>
+      <div class="en">All 7 passing means you have reproduced every change from <code class="inline">Lecture3demo_starter</code> to <code class="inline">week03_demo</code>.</div>
+    </div>
+  </section>
+
+  <!-- ================= 11 ================= -->
+  <section id="s11">
+    <h2><span class="num">11</span>常见错误与排查<small>Troubleshooting</small></h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>现象 Symptom</th><th>原因 Cause</th><th>解决 Fix</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><code>The file does not exist</code></td>
+            <td>路径写错，或命令行工作目录不对（<code>04</code> 用相对路径）</td>
+            <td><code>cd</code> 到项目根目录；路径写成 <code>data/xxx.txt</code> 或 <code>__DIR__ . '/data/xxx.txt'</code></td>
+          </tr>
+          <tr>
+            <td><code>Warning: file_get_contents(...): Failed to open stream: No such file or directory</code> 及 <code>stat failed</code></td>
+            <td>直接读了不存在的文件，没做 <code>file_exists()</code> 判断</td>
+            <td>先判断，再读（见步骤二）</td>
+          </tr>
+          <tr>
+            <td><code>Notice: fwrite(): Write of 18 bytes failed with errno=9 Bad file descriptor</code></td>
+            <td>在 <code>fopen(..., "r")</code> 只读句柄上调用 <code>fwrite()</code></td>
+            <td>把模式改成 <code>"a"</code>（见步骤四）</td>
+          </tr>
+          <tr>
+            <td><code>Error (File: .../file_utility.php, line 60): Could not open the file for writing!</code></td>
+            <td>上面那条失败触发了 <code>fileWrite()</code> <b>里自己写的</b> <code>throw</code>，是设计好的行为</td>
+            <td>先修 <code>"r"</code> → <code>"a"</code>；这条信息本身不是 PHP 内部错误</td>
+          </tr>
+          <tr>
+            <td><code>Fatal error: Uncaught TypeError: fgetcsv(): Argument #1 ($stream) must be of type resource, bool given ... :45</code></td>
+            <td>文件不存在时 <code>openFile()</code> 返回 <code>false</code>，而 <code>readCSV()</code> <b>没检查</b>就传给了 <code>fgetcsv()</code></td>
+            <td>在 <code>readCSV()</code> 里加保护：<code>$fh = openFile($fileName,'r'); if(!$fh) return;</code></td>
+          </tr>
+          <tr>
+            <td><code>Warning: Undefined array key 1 ... on line 9</code>，链接变成 <code>mailto:</code></td>
+            <td><code>users.txt</code> 某行用<b>空格</b>代替了 <b>Tab</b>，<code>explode("\t")</code> 分不出两列</td>
+            <td>把该行改成 Tab 分隔（本仓库 <code>week03_demo/data/users.txt</code> 第 1 行就是这种情况）</td>
+          </tr>
+          <tr>
+            <td>网页上内容挤成一行，或什么都没有</td>
+            <td>脚本用 <code>\n</code>，浏览器不认；<code>02</code>/<code>03</code> 本来就几乎没有输出</td>
+            <td>用「查看网页源代码」，或在命令行运行</td>
+          </tr>
+          <tr>
+            <td><code>failed to open stream: Permission denied</code></td>
+            <td>文件权限不足、被同步软件（如 OneDrive）锁定、XAMPP 用户无写权限</td>
+            <td>macOS/Linux：<code>chmod 664 data/*.txt</code>；Windows：取消"只读"，必要时暂停云同步</td>
+          </tr>
+          <tr>
+            <td>中文乱码或页面开头多出空白行</td>
+            <td>文件编码不是 UTF-8（无 BOM），或 <code>?&gt;</code> 之后有空白</td>
+            <td>保存为 UTF-8 无 BOM；纯 PHP 文件省略结尾 <code>?&gt;</code></td>
+          </tr>
+          <tr>
+            <td>PHP 8.3+/8.4+ 提示 <code>fgetcsv()</code> 相关 deprecated</td>
+            <td>新版本对 <code>$length</code>、<code>$escape</code> 参数有废弃提醒</td>
+            <td>改写为 <code>fgetcsv($fh, null, ',')</code>，显式传参，语义不变</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= 12 ================= -->
+  <section id="s12">
+    <h2><span class="num">12</span>关键函数速查表<small>Quick reference</small></h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>函数 Function</th><th>作用 Purpose</th><th>返回值 Returns</th><th>用在哪 Where</th></tr></thead>
+        <tbody>
+          <tr><td><code>file_get_contents($f)</code></td><td>一次读入整个文件</td><td><code>string</code> 或 <code>false</code></td><td><code>01</code>、<code>02</code></td></tr>
+          <tr><td><code>file_put_contents($f,$s[,FILE_APPEND])</code></td><td>写 / 追加</td><td>写入字节数或 <code>false</code></td><td><code>03</code></td></tr>
+          <tr><td><code>filesize($f)</code></td><td>文件字节数</td><td><code>int</code> 或 <code>false</code></td><td><code>01</code></td></tr>
+          <tr><td><code>file_exists($f)</code></td><td>文件或目录是否存在</td><td><code>bool</code></td><td><code>02</code>、<code>openFile()</code></td></tr>
+          <tr><td><code>file($f)</code></td><td>读成数组（每元素一行）</td><td><code>array</code> 或 <code>false</code></td><td><code>readArray()</code></td></tr>
+          <tr><td><code>fopen($f,$mode)</code></td><td>打开文件取得句柄</td><td><code>resource</code> 或 <code>false</code></td><td><code>openFile()</code>、<code>fileWrite()</code></td></tr>
+          <tr><td><code>fgets($fh)</code></td><td>读一行</td><td><code>string</code> 或 <code>false</code></td><td><code>readData()</code></td></tr>
+          <tr><td><code>fgetcsv($fh,$len,$sep)</code></td><td>读一行并按分隔符切分</td><td><code>array</code> 或 <code>false</code></td><td><code>readCSV()</code></td></tr>
+          <tr><td><code>fwrite($fh,$s)</code></td><td>通过句柄写入</td><td>写入字节数或 <code>false</code></td><td><code>fileWrite()</code></td></tr>
+          <tr><td><code>feof($fh)</code></td><td>是否到达文件末尾</td><td><code>bool</code></td><td><code>readData()</code></td></tr>
+          <tr><td><code>fclose($fh)</code></td><td>关闭句柄，释放资源</td><td><code>bool</code></td><td><code>readData()</code>、<code>readCSV()</code>、<code>fileWrite()</code></td></tr>
+          <tr><td><code>trim()</code> / <code>explode()</code> / <code>list()</code></td><td>去空白 / 分割 / 解构</td><td>—</td><td><code>readArray()</code>、<code>readCSV()</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ================= 13 ================= -->
+  <section id="s13">
+    <h2><span class="num">13</span>加练题目<small>Extension exercises</small></h2>
+    <ol>
+      <li><b>数行数 / Count lines.</b> 写 <code class="inline">05_count_lines.php</code>，输出 <code class="inline">data/orders.txt</code> 的总行数（提示：<code class="inline">file()</code> + <code class="inline">count()</code>）。</li>
+      <li><b>安全的表格 / Safer table.</b> 给 <code class="inline">readCSV()</code> 加 <code class="inline">if(!$fh) return;</code>，补上漏掉的 <code class="inline">&lt;/table&gt;</code>，并用 <code class="inline">htmlspecialchars()</code> 处理单元格内容，防止 HTML 注入。</li>
+      <li><b>更好的 CSV 表格 / Better CSV table.</b> 第一行改成表头 <code class="inline">&lt;th&gt;</code>，其余行用 <code class="inline">&lt;td&gt;</code>（提示：加一个计数器变量）。</li>
+      <li><b>创建新文件的函数 / Exclusive create.</b> 给 <code class="inline">inc/file_utility.php</code> 追加 <code class="inline">writeNewFile($fileName, $str)</code>：文件不存在时用 <code class="inline">"w"</code> 模式创建并写入，返回写入字节数；已存在时阻止覆盖并提示。</li>
+      <li><b>加锁写入 / Locked append.</b> 用 <code class="inline">file_put_contents($f, $s, FILE_APPEND | LOCK_EX)</code> 追加一行，并解释多用户环境下 <code class="inline">LOCK_EX</code> 的作用。</li>
+      <li><b>返回数据而不是直接输出 / Return, don't echo.</b> 复制 <code class="inline">readCSV()</code> 为 <code class="inline">getCSV($fileName)</code>，把 <code class="inline">echo</code> 改成累积字符串并 <code class="inline">return</code>，体会"函数返回数据、页面负责显示"的分离设计。</li>
+      <li><b>错误处理练习 / Error handling.</b> 故意把 <code class="inline">04</code> 里的 <code class="inline">data/users.txt</code> 改成 <code class="inline">data/users2.txt</code>，观察报错链路（哪一行触发、谁抛异常），再改回来。</li>
+    </ol>
+  </section>
+
+  <!-- ================= 14 ================= -->
+  <section id="s14">
+    <h2><span class="num">14</span>术语表（中英对照）<small>Glossary</small></h2>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>中文 Chinese</th><th>English</th><th>说明 Note</th></tr></thead>
+        <tbody>
+          <tr><td>文件句柄</td><td>file handle</td><td><code>fopen()</code> 返回的资源，后续读写都靠它</td></tr>
+          <tr><td>文件指针</td><td>file pointer</td><td>当前读/写位置；<code>"a"</code> 模式打开时在末尾</td></tr>
+          <tr><td>追加模式</td><td>append mode</td><td><code>"a"</code>，写在末尾且不清空</td></tr>
+          <tr><td>覆盖写</td><td>overwrite</td><td><code>"w"</code> 或 <code>file_put_contents()</code> 的默认行为</td></tr>
+          <tr><td>只读模式</td><td>read-only mode</td><td><code>"r"</code>，能读不能写</td></tr>
+          <tr><td>二进制模式</td><td>binary mode</td><td>模式字符串里的 <code>b</code></td></tr>
+          <tr><td>定界符（heredoc）</td><td>heredoc / nowdoc</td><td>多行字符串语法</td></tr>
+          <tr><td>解析 CSV</td><td>parse CSV</td><td><code>fgetcsv()</code> 按分隔符切成数组</td></tr>
+          <tr><td>制表符</td><td>tab (<code>\t</code>)</td><td><code>users.txt</code> 的列分隔符</td></tr>
+          <tr><td>换行符</td><td>newline (<code>\n</code>)</td><td>与 <code>\r\n</code>（Windows CRLF）相对</td></tr>
+          <tr><td>文件末尾</td><td>end of file (EOF)</td><td>用 <code>feof()</code> 判断</td></tr>
+          <tr><td>异常</td><td>exception</td><td><code>throw</code> / <code>try</code> / <code>catch</code> / <code>finally</code></td></tr>
+          <tr><td>相对路径</td><td>relative path</td><td>相对当前工作目录，如 <code>data/users.txt</code></td></tr>
+          <tr><td>绝对路径</td><td>absolute path</td><td>如 <code>__DIR__ . '/data/data.txt'</code></td></tr>
+          <tr><td>幂等</td><td>idempotent</td><td>重复执行结果不变；<code>03</code> 幂等，<code>04</code> 追加<b>不</b>幂等</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  </main>
+</div>
+
+<footer>
+  <p><b>文件对照 / Where to look</b> · 成品代码 finished code: <code>../week03_demo/</code> · 全新起点 clean start: <code>../Lecture3demo_starter/</code> · 本指南同内容 Markdown: <code>README.md</code></p>
+  <p>祝调试顺利！/ Happy debugging!</p>
+</footer>
+
+</body>
+</html>
